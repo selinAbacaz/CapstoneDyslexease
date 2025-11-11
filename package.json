@@ -7,6 +7,7 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
   "devDependencies": {
+    "@repo/eslint-config": "*",
     "prettier": "^3.6.2",
     "turbo": "^2.6.0"
   },
