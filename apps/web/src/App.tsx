@@ -1,22 +1,23 @@
-import React, { useState } from "react";
-import "./App.css";
-import { DropFile } from "./components/FileDragger";
-import { MakeUppercase } from "./components/MakeUppercase";
-import { MakeLastUpper } from "./components/MakeLastUpper";
-import { LetterSpacing } from "./components/LetterSpacing";
-import { AddNewLine } from "./components/AddNewLine";
-import { RemoveLine } from "./components/RemoveLine";
-
-
+import { useState } from 'react';
+import './App.css';
+import { DropFile } from './components/FileDragger';
+import { MakeUppercase } from './components/MakeUppercase';
+import { MakeLastUpper } from './components/MakeLastUpper';
+import { LetterSpacing } from './components/LetterSpacing';
+import { AddNewLine } from './components/AddNewLine';
+import { RemoveLine } from './components/RemoveLine';
 
 function App() {
   const [isDragOver, setisDragOver] = useState<boolean>(false);
   const [file, setFile] = useState<File[]>([]);
-  const [words, setWords] = useState<string>("");
+  const [words, setWords] = useState<string>('');
 
   return (
     <div>
-      <div className="App-header" style={{ justifyContent: "flex-start", fontFamily: "Arial"}}>
+      <div
+        className="App-header"
+        style={{ justifyContent: 'flex-start', fontFamily: 'Arial' }}
+      >
         <MakeUppercase
           isDragOver={isDragOver}
           setIsDragOver={setisDragOver}
@@ -58,7 +59,17 @@ function App() {
           words={words}
           setWords={setWords}
         ></DropFile>
-        <p style={{display: "flex", whiteSpace: "pre-line", fontSize: "20px", textAlign: "left"}} id="changeText11">{words}</p>
+        <p
+          style={{
+            display: 'flex',
+            whiteSpace: 'pre-line',
+            fontSize: '20px',
+            textAlign: 'left',
+          }}
+          id="changeText11"
+        >
+          {words}
+        </p>
       </div>
     </div>
   );
