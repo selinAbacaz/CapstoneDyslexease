@@ -1,7 +1,6 @@
 .App {
   text-align: left;
   font-family: 'Courier New', Courier, monospace;
-
 }
 
 .App-logo {
@@ -25,13 +24,11 @@
   color: #61dafb;
 }
 
-.App-Canvas{
-
-  width: 400px; 
-        height: 300px; 
-        border: 2px solid #000; 
-        background-color: #ffffff22; 
-        display: block; 
-        margin: 0 auto; 
+.App-Canvas {
+  width: 400px;
+  height: 300px;
+  border: 2px solid #000;
+  background-color: #ffffff22;
+  display: block;
+  margin: 0 auto;
 }
-
