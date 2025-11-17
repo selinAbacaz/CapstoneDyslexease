@@ -2,19 +2,79 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 datasource db {
-  provider = "postgres"
-  url      = env("DATABASE_URL")
+  provider  = "postgres"
+  url       = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
 }
 
 generator client {
   provider = "prisma-client-js"
-  output = "../generated/client"
+  output   = "../generated/client"
+}
+
+model Authentication {
+  auth_cuid   String   @id @default(cuid())
+  provider    String?
+  provider_id String?
+  user_cuid   String?
+  created_at  DateTime @default(now())
+  modified_at DateTime @updatedAt
+  user        User?    @relation(fields: [user_cuid], references: [user_cuid])
 }
 
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime?
+  user_cuid       String           @id @default(cuid())
+  username        String?
+  email           String?
+  password_hash   String?
+  user_pref_cuid  String?
+  created_at      DateTime         @default(now())
+  modified_at     DateTime         @updatedAt
+  user_pref       UserPreference?  @relation(fields: [user_pref_cuid], references: [user_pref_cuid])
+  authentications Authentication[]
+  files           File[]
+}
+
+model UserPreference {
+  user_pref_cuid       String          @id @default(cuid())
+  text_color_hex       String?
+  background_color_hex String?
+  text_spacing         Int?
+  font_size            Int?
+  capitalization_cuid  String?
+  letter_swap_cuid     String?
+  created_at           DateTime        @default(now())
+  modified_at          DateTime        @default(now()) @updatedAt
+  capitalization       Capitalization? @relation(fields: [capitalization_cuid], references: [capitalization_cuid])
+  letter_swap          LetterSwap?     @relation(fields: [letter_swap_cuid], references: [letter_swap_cuid])
+  users                User[]
+}
+
+model Capitalization {
+  capitalization_cuid String           @id @default(cuid())
+  is_first_letter     Int?
+  is_last_letter      Int?
+  created_at          DateTime         @default(now())
+  modified_at         DateTime         @updatedAt
+  user_preferences    UserPreference[]
+}
+
+model LetterSwap {
+  letter_swap_cuid String           @id @default(cuid())
+  letter1          String           @db.Char(1)
+  letter2          String           @db.Char(1)
+  created_at       DateTime         @default(now())
+  modified_at      DateTime         @default(now()) @updatedAt
+  user_preferences UserPreference[]
+}
+
+model File {
+  file_cuid      String   @id @default(cuid())
+  file_name      String
+  file_type      String?
+  file_link      String?
+  extracted_text String?
+  created_at     DateTime @default(now())
+  modified_at    DateTime @updatedAt
+  users          User[]
 }
