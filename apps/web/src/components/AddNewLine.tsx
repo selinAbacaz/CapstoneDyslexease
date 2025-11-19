@@ -13,7 +13,7 @@ export function AddNewLine(props: DropFilesProps) {
   }
 
   return (
-    <Button onClick={addLine} disabled={props.words === ''}>
+    <Button style={{fontFamily: props.fontFamily, boxShadow: '2px 2px 10px #99aee7'}}onClick={addLine} disabled={props.words === ''}>
       Add a new Line
     </Button>
   );

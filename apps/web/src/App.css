@@ -1,34 +1,8 @@
-.App {
-  text-align: left;
-  font-family: 'Courier New', Courier, monospace;
-}
+.fontsColors
+{
+  font-color: #7c95d9;
+  font-color: #99aee7;
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
+  font-color: #4a6cc7;
 
-.App-header {
-  font-family: 'Courier New', Courier, monospace;
-  background-color: #ffffff2c;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: var(--font-size, 16px);
-  color: var(--text-color, #000000);
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-.App-Canvas {
-  width: 400px;
-  height: 300px;
-  border: 2px solid #000;
-  background-color: #ffffff22;
-  display: block;
-  margin: 0 auto;
 }

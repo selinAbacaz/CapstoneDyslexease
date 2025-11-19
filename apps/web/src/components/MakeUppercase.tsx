@@ -43,7 +43,7 @@ export function MakeUppercase(props: DropFilesProps) {
 
   return (
     <div>
-      <Button onClick={changeText} disabled={props.words === ''}>
+      <Button onClick={changeText} disabled={props.words === ''} style={{fontFamily: props.fontFamily, boxShadow: '2px 2px 10px #99aee7'}}>
         Make Uppercase
       </Button>
     </div>

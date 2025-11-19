@@ -7,6 +7,7 @@ export interface DropFilesProps {
   setFile: (newFile: File[]) => void;
   words: string;
   setWords: (newWords: string) => void;
+  fontFamily: string;
 }
 
 export function DropFile(props: DropFilesProps) {
@@ -57,14 +58,17 @@ export function DropFile(props: DropFilesProps) {
         onDrop={handleDrop}
         style={{
           margin: 'auto',
+          marginTop: '10vh',
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-          height: '50px',
-          width: '300px',
+          minHeight: '50vh',
+          minWidth: '100vh',
           border: '1px dotted',
           backgroundColor: props.isDragOver ? 'lightgray' : 'white',
           color: 'black',
+          fontFamily: props.fontFamily, 
+          boxShadow: '2px 2px 10px #99aee7'
         }}
       >
         Drag files
