@@ -95,6 +95,26 @@ function App() {
         
 
 <div style={{display: 'flex' , flexDirection: 'column', alignItems: 'center', marginTop: '20px', gap: '20px' }}>
+        
+        <p
+
+          style={{
+            marginTop: '5vh',
+            maxWidth: '80%',
+            whiteSpace: 'pre-line',
+            fontSize: '20px',
+            textAlign: 'left',
+            marginBottom: '50px',
+            border: '1px dotted',
+            color: 'black',
+            boxShadow: '2px 2px 10px #99aee7',
+            padding: '40px',
+            display: words ? 'block' : 'none',
+          }}
+          id="changeText11"
+        >
+          {words}
+        </p>
         <DropFile
           isDragOver={isDragOver}
           setIsDragOver={setisDragOver}
@@ -104,17 +124,6 @@ function App() {
           setWords={setWords}
           fontFamily= {fontFamily} 
         ></DropFile>
-        <p
-          style={{
-            display: 'flex',
-            whiteSpace: 'pre-line',
-            fontSize: '20px',
-            textAlign: 'left',
-          }}
-          id="changeText11"
-        >
-          {words}
-        </p>
 
   </div>      
 
