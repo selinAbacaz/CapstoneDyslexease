@@ -23,7 +23,7 @@ function App() {
 
   return (
     <div className="App" id="container" style={{ fontFamily: fontFamily }}>
-      <Navbar></Navbar>
+      <Navbar />
 
       <div
         style={{
@@ -101,15 +101,7 @@ function App() {
           setWords={setWords}
           fontFamily={fontFamily}
         ></MakeLastUpper>
-        <AddNewLine
-          isDragOver={isDragOver}
-          setIsDragOver={setisDragOver}
-          file={file}
-          setFile={setFile}
-          words={words}
-          setWords={setWords}
-          fontFamily={fontFamily}
-        ></AddNewLine>
+        <AddNewLine />
         <RemoveLine
           isDragOver={isDragOver}
           setIsDragOver={setisDragOver}
