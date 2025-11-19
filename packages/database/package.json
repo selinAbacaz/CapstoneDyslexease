@@ -12,6 +12,8 @@
     }
   },
   "scripts": {
+    "types": "tsc -p tsconfig.types.json",
+    "build": "tsup src/* --format cjs,esm && npm run types",
     "db:migrate:deploy": "prisma migrate deploy",
     "db:migrate:dev": "prisma migrate dev",
     "db:push": "prisma db push",
