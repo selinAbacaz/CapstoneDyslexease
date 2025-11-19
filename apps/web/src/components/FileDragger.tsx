@@ -59,6 +59,7 @@ export function DropFile(props: DropFilesProps) {
         style={{
           margin: 'auto',
           marginTop: '10vh',
+          marginBottom: '10vh',
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
