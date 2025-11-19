@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import { DropFilesProps } from './FileDragger';
 import { Button } from 'react-bootstrap';
+import '../App.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+
 
 export function MakeUppercase(props: DropFilesProps) {
   const [isChanged, setIsChanged] = useState<boolean>(false);
@@ -43,8 +46,10 @@ export function MakeUppercase(props: DropFilesProps) {
 
   return (
     <div>
-      <Button onClick={changeText} disabled={props.words === ''} style={{fontFamily: props.fontFamily, boxShadow: '2px 2px 10px #99aee7'}}>
+      <Button className="tooltip-container" onClick={changeText} disabled={props.words === ''} style={{fontFamily: props.fontFamily, boxShadow: '2px 2px 10px #99aee7', pointerEvents: 'auto'}}>
         Make Uppercase
+        <div className="tooltip-text ">Make first letter of each word uppercase</div>
+
       </Button>
     </div>
   );

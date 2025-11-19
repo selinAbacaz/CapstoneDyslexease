@@ -33,15 +33,17 @@ function App() {
           justifyContent: 'center',
         }}
       >
-        <div className="dropdown">
+        <div className="dropdown tooltip-container" style={{pointerEvents: 'auto', fontFamily: fontFamily}}>
+          <div className="tooltip-text " style={{backgroundColor: "#1317f9c9", opacity:"90%", maxWidth: "20vh", color: "white"}}>remove added new lines </div>
           <button
-            className="btn btn-primary dropdown-toggle"
+            className="btn btn-primary dropdown-toggle "
             type="button"
             data-bs-toggle="dropdown"
             aria-expanded="false"
-            style={{ boxShadow: '2px 2px 10px #99aee7' }}
+            style={{ boxShadow: '2px 2px 10px #99aee7'}}
           >
             Pick Fonts
+
           </button>
           <ul className="dropdown-menu">
             <li>

@@ -1,8 +1,18 @@
 import { useState } from 'react';
 import { DropFilesProps } from './FileDragger';
 import { Button } from 'react-bootstrap';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import '../App.css';
+
+
+
 
 export function MakeLastUpper(props: DropFilesProps) {
+
+
+  
+
+
   const [isLastUpper, setIsLastUpper] = useState<boolean>(false);
 
   function changeText(): void {
@@ -22,6 +32,8 @@ export function MakeLastUpper(props: DropFilesProps) {
       setIsLastUpper(false);
     }
   }
+
+
 
   function changeWord(sentence: string): string {
     const words: string[] = sentence.split(' ');
@@ -43,8 +55,10 @@ export function MakeLastUpper(props: DropFilesProps) {
 
   return (
     <div>
-      <Button onClick={changeText} disabled={props.words === ''} style={{fontFamily: props.fontFamily, boxShadow: '2px 2px 10px #99aee7'}}>
+      <Button className="tooltip-container " onClick={changeText}  disabled={props.words === ''} style={{fontFamily: props.fontFamily, boxShadow: '2px 2px 10px #99aee7', pointerEvents: 'auto'}}  >
         Make Last Uppercase
+          <div className="tooltip-text ">Make last letter of each word uppercase</div>
+
       </Button>
     </div>
   );

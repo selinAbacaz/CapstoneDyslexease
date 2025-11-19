@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import '../App.css';
 
 interface LetterSpacingProps {
   font: string;
@@ -22,8 +23,8 @@ export function LetterSpacing({ font }: LetterSpacingProps) {
   }
 
   return (
-    <div>
-      <label htmlFor="Spacing" style={{ fontSize: '18px', fontFamily: font, color: '#4a6cc7'}}>
+    <div className= "tooltip-container" style={{pointerEvents: 'auto', fontFamily: font, color: 'white'}}>
+      <label  htmlFor="Spacing" style={{ fontSize: '18px', fontFamily: font, color: '#4a6cc7'}}>
         Change Letter Spacing: 
       </label>
       <input
@@ -35,6 +36,8 @@ export function LetterSpacing({ font }: LetterSpacingProps) {
         onChange={changeSpacing}
         style={{color: '#4a6cc7',border: '1.5px solid #4a6cc7', borderRadius: '5px', marginLeft: '10px', fontFamily: font}}
       ></input>
+        <div className="tooltip-text " style={{backgroundColor: "#1317f9c9", opacity:"80%", maxWidth: "20vh"}}>remove added new lines </div>
+
     </div>
   );
 }
