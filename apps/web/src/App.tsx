@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useFileStore } from './zustand/file-store';
 import './App.css';
 import { DropFile } from './components/FileDragger';
 import { MakeUppercase } from './components/MakeUppercase';
@@ -141,15 +142,7 @@ function App() {
         >
           {words}
         </p>
-        <DropFile
-          isDragOver={isDragOver}
-          setIsDragOver={setisDragOver}
-          file={file}
-          setFile={setFile}
-          words={words}
-          setWords={setWords}
-          fontFamily={fontFamily}
-        ></DropFile>
+        <DropFile />
       </div>
     </div>
   );

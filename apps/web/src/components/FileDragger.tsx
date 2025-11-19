@@ -1,4 +1,5 @@
-import { DragEvent } from 'react';
+import { DragEvent, useState } from 'react';
+import { useFileStore } from '../zustand/file-store';
 
 export interface DropFilesProps {
   isDragOver: boolean;
@@ -10,30 +11,27 @@ export interface DropFilesProps {
   fontFamily: string;
 }
 
-export function DropFile(props: DropFilesProps) {
+export function DropFile() {
+  const [isFileOver, setIsFileOver] = useState<boolean>(false);
+  const setContent = useFileStore((state) => state.setContent);
+
   function handleDragOver(event: DragEvent<HTMLDivElement>): void {
     event.preventDefault();
-    props.setIsDragOver(true);
-  }
-
-  function handleDragLeave(event: DragEvent<HTMLDivElement>): void {
-    event.preventDefault();
-    props.setIsDragOver(false);
+    setIsFileOver(true);
   }
 
   function handleDrop(event: DragEvent<HTMLDivElement>): void {
     event.preventDefault();
-    props.setIsDragOver(false);
+    setIsFileOver(false);
 
     const userFiles = Array.from(event.dataTransfer.files);
-    props.setFile(userFiles);
 
     userFiles.forEach((file: File) => {
       const reader = new FileReader();
 
       reader.onloadend = () => {
         if (typeof reader.result === 'string') {
-          props.setWords(reader.result);
+          setContent(reader.result);
         }
       };
 
@@ -50,7 +48,6 @@ export function DropFile(props: DropFilesProps) {
     <div>
       <div
         onDragOver={handleDragOver}
-        onDragLeave={handleDragLeave}
         onDrop={handleDrop}
         style={{
           margin: 'auto',
@@ -62,9 +59,8 @@ export function DropFile(props: DropFilesProps) {
           minHeight: '50vh',
           minWidth: '100vh',
           border: '1px dotted',
-          backgroundColor: props.isDragOver ? 'lightgray' : 'white',
+          backgroundColor: isFileOver ? 'gray' : 'white',
           color: 'black',
-          fontFamily: props.fontFamily,
           boxShadow: '2px 2px 10px #99aee7',
         }}
       >
