@@ -9,7 +9,7 @@ export function RemoveLine(props: DropFilesProps) {
   }
 
   return (
-    <Button onClick={removeLine} disabled={props.words === ''}>
+    <Button onClick={removeLine} disabled={props.words === ''} style={{fontFamily: props.fontFamily, boxShadow: '2px 2px 10px #99aee7'}}>
       Remove a Line
     </Button>
   );

@@ -15,9 +15,9 @@
     "@repo/eslint-config": "*",
     "@repo/typescript-config": "*",
     "prettier": "^3.6.2",
-    "turbo": "^2.6.0",
-    "tsx": "4.19.1",
     "prisma": "latest",
+    "tsx": "4.19.1",
+    "turbo": "^2.6.0",
     "typescript": "5.9.2"
   },
   "packageManager": "npm@10.9.0",
@@ -29,7 +29,8 @@
     "node": ">=18"
   },
   "dependencies": {
-    "@prisma/client": "latest"
+    "@prisma/client": "latest",
+    "bootstrap": "^5.3.8"
   },
   "workspaces": [
     "apps/*",

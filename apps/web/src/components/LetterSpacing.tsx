@@ -1,6 +1,10 @@
 import { useState } from 'react';
 
-export function LetterSpacing() {
+interface LetterSpacingProps {
+  font: string;
+}
+
+export function LetterSpacing({ font }: LetterSpacingProps) {
   const [spacing, setSpacing] = useState<number>(0);
 
   function changeSpacing(event: React.ChangeEvent<HTMLInputElement>) {
@@ -19,8 +23,8 @@ export function LetterSpacing() {
 
   return (
     <div>
-      <label htmlFor="Spacing" style={{ fontSize: '18px' }}>
-        Change Letter Spacing:
+      <label htmlFor="Spacing" style={{ fontSize: '18px', fontFamily: font, color: '#4a6cc7'}}>
+        Change Letter Spacing: 
       </label>
       <input
         id="Spacing"
@@ -29,6 +33,7 @@ export function LetterSpacing() {
         max={100}
         value={spacing}
         onChange={changeSpacing}
+        style={{color: '#4a6cc7',border: '1.5px solid #4a6cc7', borderRadius: '5px', marginLeft: '10px', fontFamily: font}}
       ></input>
     </div>
   );
