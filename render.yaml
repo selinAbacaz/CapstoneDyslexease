@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: api
+    env: node
+    plan: free
+    rootDir: .
+    buildCommand: npm install  && npm run build
+    startCommand: npm run start -w ./apps/api --port 10000 --host 0.0.0.0
+    preDeployCommand: npx prisma migrate deploy && npx prisma db seed
+    healthCheckPath: /
+    autoDeploy: true
+    envVars:
+      - key: NODE_VERSION
+        value: 20
+      - key: PORT
+        value: 10000
+      - key: HOST
+        value: 0.0.0.0
+      - key: DATABASE_URL
+        sync: false  # set in Dashboard or via render CLI
+      - key: DIRECT_URL
+        sync: false  # set in Dashboard or via render CLI
