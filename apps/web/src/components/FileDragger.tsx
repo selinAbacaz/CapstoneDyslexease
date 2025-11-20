@@ -86,24 +86,6 @@ export function DropFile(props: DropFilesProps) {
       accumWords += extracted + '\n';
     }
     props.setWords(accumWords);
-
-
-    /* userFiles.forEach((file: File) => {
-      const reader = new FileReader();
-
-      reader.onloadend = () => {
-        if (typeof reader.result === 'string') {
-          props.setWords(reader.result);
-        }
-      };
-
-      reader.onerror = () => {
-        console.error('There was an issue.');
-      };
-
-      reader.readAsText(file);
-      return reader;
-    }); */
   }
 
   return (
