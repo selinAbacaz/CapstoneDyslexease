@@ -94,9 +94,7 @@ export function DropFile(props: DropFilesProps) {
 
       reader.onloadend = () => {
         if (typeof reader.result === 'string') {
-          const removedLineBreaks = reader.result.replace(/[\r\n]+/gm, ' ');
-          accumWords += removedLineBreaks.split('.').join('.\n');
-          props.setWords(accumWords);
+          props.setWords(reader.result);
         }
       };
 
@@ -127,8 +125,8 @@ export function DropFile(props: DropFilesProps) {
           border: '1px dotted',
           backgroundColor: props.isDragOver ? 'lightgray' : 'white',
           color: 'black',
-          fontFamily: props.fontFamily, 
-          boxShadow: '2px 2px 10px #99aee7'
+          fontFamily: props.fontFamily,
+          boxShadow: '2px 2px 10px #99aee7',
         }}
       >
         Drag files
