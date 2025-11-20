@@ -83,8 +83,7 @@ export function DropFile(props: DropFilesProps) {
 
     for (const file of userFiles) {
       const extracted = await extractText(file);
-      const cleaned = extracted.replace(/[\r\n]+/gm, " ").split('.').join('.\n');
-      accumWords += cleaned + '\n';
+      accumWords += extracted + '\n';
     }
     props.setWords(accumWords);
 
