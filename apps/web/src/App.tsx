@@ -12,6 +12,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 function App() {
+  const content = useFileStore((state) => state.content);
   const ArialFont = 'Arial, sans-serif';
   const TimesNewRomanFont = 'Times New Roman, serif';
   const HelveticaFont = 'Helvetica, sans-serif';
@@ -93,15 +94,7 @@ function App() {
           setWords={setWords}
           fontFamily={fontFamily}
         ></MakeUppercase>
-        <MakeLastUpper
-          isDragOver={isDragOver}
-          setIsDragOver={setisDragOver}
-          file={file}
-          setFile={setFile}
-          words={words}
-          setWords={setWords}
-          fontFamily={fontFamily}
-        ></MakeLastUpper>
+        <MakeLastUpper />
         <AddNewLine />
         <RemoveLine
           isDragOver={isDragOver}
@@ -112,7 +105,7 @@ function App() {
           setWords={setWords}
           fontFamily={fontFamily}
         ></RemoveLine>
-        <LetterSpacing font={fontFamily}></LetterSpacing>
+        <LetterSpacing />
       </div>
 
       <div
@@ -136,11 +129,11 @@ function App() {
             color: 'black',
             boxShadow: '2px 2px 10px #99aee7',
             padding: '40px',
-            display: words ? 'block' : 'none',
+            display: content ? 'block' : 'none',
           }}
           id="changeText11"
         >
-          {words}
+          {content}
         </p>
         <DropFile />
       </div>

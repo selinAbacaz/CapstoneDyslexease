@@ -1,49 +1,26 @@
-import { useState } from 'react';
-import { DropFilesProps } from './FileDragger';
 import { Button } from 'react-bootstrap';
+import { useFileStore } from '../zustand/file-store';
 
-export function MakeLastUpper(props: DropFilesProps) {
-  const [isLastUpper, setIsLastUpper] = useState<boolean>(false);
+export function MakeLastUpper() {
+  const content = useFileStore((state) => state.content);
+  const setContent = useFileStore((state) => state.setContent);
 
-  function changeText(): void {
-    if (!isLastUpper) {
-      const sentences: string[] = props.words.split('.\n');
-      const modifiedText = sentences
-        .map((sentence: string): string => changeWord(sentence))
-        .join('.\n');
-      props.setWords(modifiedText);
-      setIsLastUpper(true);
-    } else {
-      const sentences: string[] = props.words.split('.\n');
-      const modifiedText = sentences
-        .map((sentence: string): string => changeWord(sentence))
-        .join('.\n');
-      props.setWords(modifiedText);
-      setIsLastUpper(false);
-    }
-  }
-
-  function changeWord(sentence: string): string {
-    const words: string[] = sentence.split(' ');
-    if (!isLastUpper) {
-      return words
-        .map(
-          (word: string): string =>
-            `${word.slice(0, word.length - 1)}${word.charAt(word.length - 1).toUpperCase()}`,
-        )
-        .join(' ');
-    }
-    return words
-      .map(
-        (word: string): string =>
-          `${word.slice(0, word.length - 1)}${word.charAt(word.length - 1).toLowerCase()}`,
-      )
-      .join(' ');
+  function toggleLastUpper() {
+    const newContent = content.replace(/[a-z](?=$|[\s.!?])/g, (letter) =>
+      letter.toUpperCase(),
+    );
+    setContent(newContent);
   }
 
   return (
     <div>
-      <Button onClick={changeText} disabled={props.words === ''} style={{fontFamily: props.fontFamily, boxShadow: '2px 2px 10px #99aee7'}}>
+      <Button
+        onClick={toggleLastUpper}
+        disabled={content === ''}
+        style={{
+          boxShadow: '2px 2px 10px #99aee7',
+        }}
+      >
         Make Last Uppercase
       </Button>
     </div>
