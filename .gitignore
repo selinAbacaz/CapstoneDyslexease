@@ -19,18 +19,4 @@ pnpm-debug.log*
 dist
 build
 
-.vscod
-# Yarn PnP Files (Generated files - DO NOT commit)
-.pnp.cjs
-.pnp.loader.mjs
-.yarn/*
-
-# Ignore the root .yarn folder itself, but keep the version file if it exists
-!/.yarn/cache
-!/.yarn/sdks
-!/.yarn/plugins
-!/.yarn/releases
-!/.yarn/versions
-
-# Temporary Editor Files
-*.swpe
+.vscode
