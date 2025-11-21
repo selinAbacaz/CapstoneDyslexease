@@ -24,6 +24,7 @@ build
 .pnp.cjs
 .pnp.loader.mjs
 .yarn/*
+yarn.lock
 
 # Ignore the root .yarn folder itself, but keep the version file if it exists
 !/.yarn/cache
@@ -34,3 +35,5 @@ build
 
 # Temporary Editor Files
 *.swpe
+
+
