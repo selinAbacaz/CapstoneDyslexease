@@ -22,7 +22,7 @@ jobs:
   deploy:
     environment:
       name: Preview-${{github.ref_name}}
-      url: ${{ steps.deployment.outputs.page_url }}preview/${{github.ref_name}}/
+      url: ${{ steps.deployment.outputs.page_url }}preview/${{github.event.pull_request.number}}/
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -38,7 +38,7 @@ jobs:
         working-directory: ./apps/web
         run: npm run build
         env:
-            VITE_BASE_URL: /CapstoneDyslexease/preview-${{github.ref_name}}/
+            VITE_BASE_URL: /CapstoneDyslexease/preview-${{github.event.pull_request.number}}/
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
