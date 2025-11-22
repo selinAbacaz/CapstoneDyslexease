@@ -38,7 +38,7 @@ jobs:
         working-directory: ./apps/web
         run: npm run build
         env:
-            VITE_BASE_URL: /CapstoneDyslexease/preview-${{github.event.pull_request.number}}/
+            VITE_BASE_URL: /CapstoneDyslexease/preview/${{github.event.pull_request.number}}/
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
