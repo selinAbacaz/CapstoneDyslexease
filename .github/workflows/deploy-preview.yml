@@ -37,6 +37,8 @@ jobs:
       - name: Build
         working-directory: ./apps/web
         run: npm run build
+        env:
+            VITE_BASE_URL: /preview-${{github.ref_name}}/
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
@@ -44,6 +46,7 @@ jobs:
         with:
           # Upload dist folder
           path: './apps/web/dist'
+          destination: preview-${{github.ref_name}}
       - name: Deploy to Preview-${{github.ref_name}}
         id: deployment
         uses: actions/deploy-pages@v4
