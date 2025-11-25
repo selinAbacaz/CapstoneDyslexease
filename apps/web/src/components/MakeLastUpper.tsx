@@ -6,9 +6,20 @@ export function MakeLastUpper() {
   const setContent = useFileStore((state) => state.setContent);
 
   function toggleLastUpper() {
-    const newContent = content.replace(/[a-z](?=$|[\s.!?])/g, (letter) =>
-      letter.toUpperCase(),
-    );
+    // This RegEx matches every last letter in a string if it is lowercase
+    const lowerCaseLetters = content.match(/[a-z](?=$|[\s.!?])/g);
+
+    let newContent: string;
+    if (lowerCaseLetters) {
+      newContent = content.replace(/[a-z](?=$|[\s.!?])/gi, (letter) =>
+        letter.toUpperCase(),
+      );
+    } else {
+      newContent = content.replace(/[a-z](?=$|[\s.!?])/gi, (letter) =>
+        letter.toLowerCase(),
+      );
+    }
+
     setContent(newContent);
   }
 
@@ -21,7 +32,7 @@ export function MakeLastUpper() {
           boxShadow: '2px 2px 10px #99aee7',
         }}
       >
-        Make Last Uppercase
+        Toggle Last Letters
       </Button>
     </div>
   );

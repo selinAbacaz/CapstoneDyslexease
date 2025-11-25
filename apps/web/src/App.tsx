@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import { useFileStore } from './zustand/file-store';
-import './App.css';
 import { DropFile } from './components/FileDragger';
-import { MakeUppercase } from './components/MakeUppercase';
+import { MakeFirstUpper } from './components/MakeUppercase';
 import { MakeLastUpper } from './components/MakeLastUpper';
 import { LetterSpacing } from './components/LetterSpacing';
 import { AddNewLine } from './components/AddNewLine';
@@ -10,17 +9,15 @@ import { RemoveLine } from './components/RemoveLine';
 import { Navbar } from './components/navbar';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import './App.css';
 
 function App() {
   const content = useFileStore((state) => state.content);
+
   const ArialFont = 'Arial, sans-serif';
   const TimesNewRomanFont = 'Times New Roman, serif';
   const HelveticaFont = 'Helvetica, sans-serif';
   const SegoeUIFont = 'Segoe UI, Tahoma, Geneva, Verdana, sans-serif';
-
-  const [isDragOver, setisDragOver] = useState<boolean>(false);
-  const [file, setFile] = useState<File[]>([]);
-  const [words, setWords] = useState<string>('');
   const [fontFamily, changeFont] = useState<string>(ArialFont);
 
   return (
@@ -85,26 +82,10 @@ function App() {
           </ul>
         </div>
 
-        <MakeUppercase
-          isDragOver={isDragOver}
-          setIsDragOver={setisDragOver}
-          file={file}
-          setFile={setFile}
-          words={words}
-          setWords={setWords}
-          fontFamily={fontFamily}
-        ></MakeUppercase>
+        <MakeFirstUpper />
         <MakeLastUpper />
         <AddNewLine />
-        <RemoveLine
-          isDragOver={isDragOver}
-          setIsDragOver={setisDragOver}
-          file={file}
-          setFile={setFile}
-          words={words}
-          setWords={setWords}
-          fontFamily={fontFamily}
-        ></RemoveLine>
+        <RemoveLine />
         <LetterSpacing />
       </div>
 

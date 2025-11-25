@@ -1,50 +1,38 @@
-import { useState } from 'react';
-import { DropFilesProps } from './FileDragger';
 import { Button } from 'react-bootstrap';
+import { useFileStore } from '../zustand/file-store';
 
-export function MakeUppercase(props: DropFilesProps) {
-  const [isChanged, setIsChanged] = useState<boolean>(false);
+export function MakeFirstUpper() {
+  const content = useFileStore((state) => state.content);
+  const setContent = useFileStore((state) => state.setContent);
 
-  function changeText(): void {
-    if (!isChanged) {
-      const sentences: string[] = props.words.split('.\n');
-      const modifiedText = sentences
-        .map((sentence: string): string => changeWord(sentence))
-        .join('.\n');
-      props.setWords(modifiedText);
-      setIsChanged(true);
+  function toggleFirsttUpper() {
+    // This RegEx matches every first letter in a string if it is lowercase
+    const lowerCaseLetters = content.match(/\b[a-z]/g);
+
+    let newContent: string;
+    if (lowerCaseLetters) {
+      newContent = content.replace(/\b[a-z]/gi, (letter) =>
+        letter.toUpperCase(),
+      );
     } else {
-      const sentences: string[] = props.words.split('.\n');
-      const modifiedText = sentences
-        .map((sentence: string): string => changeWord(sentence))
-        .join('.\n');
-      props.setWords(modifiedText);
-      setIsChanged(false);
+      newContent = content.replace(/\b[a-z]/gi, (letter) =>
+        letter.toLowerCase(),
+      );
     }
-  }
 
-  function changeWord(sentence: string): string {
-    const words: string[] = sentence.split(' ');
-    if (!isChanged) {
-      return words
-        .map(
-          (word: string): string =>
-            `${word.charAt(0).toUpperCase()}${word.slice(1)}`,
-        )
-        .join(' ');
-    }
-    return words
-      .map(
-        (word: string): string =>
-          `${sentence.indexOf(word) !== 0 ? word.charAt(0).toLowerCase() : word.charAt(0)}${word.slice(1)}`,
-      )
-      .join(' ');
+    setContent(newContent);
   }
 
   return (
     <div>
-      <Button onClick={changeText} disabled={props.words === ''} style={{fontFamily: props.fontFamily, boxShadow: '2px 2px 10px #99aee7'}}>
-        Make Uppercase
+      <Button
+        onClick={toggleFirsttUpper}
+        disabled={content === ''}
+        style={{
+          boxShadow: '2px 2px 10px #99aee7',
+        }}
+      >
+        Toogle First Letters
       </Button>
     </div>
   );
