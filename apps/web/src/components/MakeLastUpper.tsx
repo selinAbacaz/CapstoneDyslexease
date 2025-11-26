@@ -1,5 +1,5 @@
 import { Button } from 'react-bootstrap';
-import { useFileStore } from '../zustand/file-store';
+import { useFileStore } from '../utils/zustand/file-store';
 
 export function MakeLastUpper() {
   const content = useFileStore((state) => state.content);

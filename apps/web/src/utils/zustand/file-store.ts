@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { FONTS } from '../constants';
 
 type FileStore = {
   content: string;
@@ -9,7 +10,7 @@ type FileStore = {
 
 export const useFileStore = create<FileStore>((set) => ({
   content: '',
-  font: '',
+  font: FONTS.arial,
   setContent: (newContent: string) => {
     set({ content: newContent });
   },

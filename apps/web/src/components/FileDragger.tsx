@@ -3,7 +3,7 @@ import * as pdfjsLib from 'pdfjs-dist';
 import mammoth from 'mammoth';
 
 import workerSrc from 'pdfjs-dist/build/pdf.worker.mjs?url';
-import { useFileStore } from '../zustand/file-store';
+import { useFileStore } from '../utils/zustand/file-store';
 pdfjsLib.GlobalWorkerOptions.workerSrc = workerSrc;
 
 export function DropFile() {

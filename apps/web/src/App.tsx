@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import { useFileStore } from './zustand/file-store';
+import { useFileStore } from './utils/zustand/file-store';
 import { DropFile } from './components/FileDragger';
 import { MakeFirstUpper } from './components/MakeUppercase';
 import { MakeLastUpper } from './components/MakeLastUpper';
@@ -12,16 +11,10 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import './App.css';
 
 function App() {
-  const { content } = useFileStore();
-
-  const ArialFont = 'Arial, sans-serif';
-  const TimesNewRomanFont = 'Times New Roman, serif';
-  const HelveticaFont = 'Helvetica, sans-serif';
-  const SegoeUIFont = 'Segoe UI, Tahoma, Geneva, Verdana, sans-serif';
-  const [fontFamily, changeFont] = useState<string>(ArialFont);
+  const { content, font } = useFileStore();
 
   return (
-    <div className="App" id="container" style={{ fontFamily: fontFamily }}>
+    <div className="App" id="container" style={{ fontFamily: font }}>
       <Navbar />
 
       <div
