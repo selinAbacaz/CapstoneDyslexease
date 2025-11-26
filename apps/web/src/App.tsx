@@ -1,7 +1,4 @@
 import { useFileStore } from './utils/zustand/file-store';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-import './App.css';
 import {
   AddNewLine,
   MakeFirstUpper,
@@ -12,6 +9,9 @@ import {
   DropFile,
   Navbar,
 } from './components';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import './App.css';
 
 function App() {
   const { content, font } = useFileStore();
