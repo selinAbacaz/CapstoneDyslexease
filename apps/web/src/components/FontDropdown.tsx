@@ -38,7 +38,9 @@ export function FontDropdown() {
       >
         Pick Fonts
       </button>
-      <ul className="dropdown-menu">{createFontOptions().map((d) => d)}</ul>
+      <ul className="dropdown-menu">
+        {createFontOptions().map((option) => option)}
+      </ul>
     </div>
   );
 }

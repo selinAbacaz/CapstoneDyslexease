@@ -1,15 +1,16 @@
 import { useFileStore } from './utils/zustand/file-store';
-import { DropFile } from './components/FileDragger';
-import { MakeFirstUpper } from './components/MakeUppercase';
-import { MakeLastUpper } from './components/MakeLastUpper';
-import { LetterSpacing } from './components/LetterSpacing';
-import { AddNewLine } from './components/AddNewLine';
-import { RemoveLine } from './components/RemoveLine';
-import { Navbar } from './components/navbar';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import './App.css';
-import { FontDropdown } from './components/FontDropdown';
+import {
+  AddNewLine,
+  MakeFirstUpper,
+  MakeLastUpper,
+  RemoveLine,
+  LetterSpacing,
+  FontDropdown,
+  DropFile,
+} from './components';
 
 function App() {
   const { content, font } = useFileStore();
