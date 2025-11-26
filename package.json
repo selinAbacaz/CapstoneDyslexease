@@ -30,7 +30,9 @@
   },
   "dependencies": {
     "@prisma/client": "latest",
-    "bootstrap": "^5.3.8"
+    "bootstrap": "^5.3.8",
+    "mammoth": "^1.11.0",
+    "pdfjs-dist": "^5.4.394"
   },
   "workspaces": [
     "apps/*",
