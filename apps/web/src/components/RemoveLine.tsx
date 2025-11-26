@@ -6,9 +6,15 @@ export function RemoveLine() {
   const setContent = useFileStore((state) => state.setContent);
 
   function removeLine() {
-    const sentences = content.split('.\n');
-    const newLines = sentences.join('.');
-    setContent(newLines);
+    // RegEx to split on punctions but retain them in the actual string
+    const lines = content.split(/(?<=[.?!])/g);
+    const newLines: string[] = [];
+    for (const line of lines) {
+      const newLine = line.replace('\n', '');
+      newLines.push(newLine);
+    }
+
+    setContent(newLines.join(''));
   }
 
   return (

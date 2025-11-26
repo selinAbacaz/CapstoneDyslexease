@@ -12,7 +12,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import './App.css';
 
 function App() {
-  const content = useFileStore((state) => state.content);
+  const { content } = useFileStore();
 
   const ArialFont = 'Arial, sans-serif';
   const TimesNewRomanFont = 'Times New Roman, serif';

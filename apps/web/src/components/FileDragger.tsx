@@ -1,16 +1,6 @@
 import { DragEvent, useState } from 'react';
 import { useFileStore } from '../zustand/file-store';
 
-export interface DropFilesProps {
-  isDragOver: boolean;
-  setIsDragOver: (newIsDragOver: boolean) => void;
-  file: File[];
-  setFile: (newFile: File[]) => void;
-  words: string;
-  setWords: (newWords: string) => void;
-  fontFamily: string;
-}
-
 export function DropFile() {
   const [isFileOver, setIsFileOver] = useState<boolean>(false);
   const setContent = useFileStore((state) => state.setContent);

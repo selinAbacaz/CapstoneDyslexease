@@ -6,15 +6,9 @@ export function AddNewLine() {
   const setContent = useFileStore((state) => state.setContent);
 
   function addLine() {
-    const sentences = content.split('.');
-    const newLines = sentences
-      .map((senetence) => {
-        if (senetence !== '\n' && senetence !== '') {
-          return senetence + '.\n';
-        }
-      })
-      .join('');
-    setContent(newLines);
+    // RegEx to split on punctions but retain them in the actual string
+    const newContent = content.split(/(?<=[.?!])/g).join('\n');
+    setContent(newContent);
   }
 
   return (
