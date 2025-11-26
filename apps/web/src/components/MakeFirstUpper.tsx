@@ -1,21 +1,21 @@
 import { Button } from 'react-bootstrap';
 import { useFileStore } from '../utils/zustand/file-store';
 
-export function MakeLastUpper() {
+export function MakeFirstUpper() {
   const content = useFileStore((state) => state.content);
   const setContent = useFileStore((state) => state.setContent);
 
-  function toggleLastUpper() {
-    // This RegEx matches every last letter in a string if it is lowercase
-    const lowerCaseLetters = content.match(/[a-z](?=$|[\s.!?])/g);
+  function toggleFirsttUpper() {
+    // This RegEx matches every first letter in a string if it is lowercase
+    const lowerCaseLetters = content.match(/\b[a-z]/g);
 
     let newContent: string;
     if (lowerCaseLetters) {
-      newContent = content.replace(/[a-z](?=$|[\s.!?])/gi, (letter) =>
+      newContent = content.replace(/\b[a-z]/gi, (letter) =>
         letter.toUpperCase(),
       );
     } else {
-      newContent = content.replace(/[a-z](?=$|[\s.!?])/gi, (letter) =>
+      newContent = content.replace(/\b[a-z]/gi, (letter) =>
         letter.toLowerCase(),
       );
     }
@@ -26,13 +26,13 @@ export function MakeLastUpper() {
   return (
     <div>
       <Button
-        onClick={toggleLastUpper}
+        onClick={toggleFirsttUpper}
         disabled={content === ''}
         style={{
           boxShadow: '2px 2px 10px #99aee7',
         }}
       >
-        Toggle Last Letters
+        Toogle First Letters
       </Button>
     </div>
   );

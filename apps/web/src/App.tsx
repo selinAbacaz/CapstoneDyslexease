@@ -1,29 +1,24 @@
-import { useState } from 'react';
-import './App.css';
-import { DropFile } from './components/FileDragger';
-import { MakeUppercase } from './components/MakeUppercase';
-import { MakeLastUpper } from './components/MakeLastUpper';
-import { LetterSpacing } from './components/LetterSpacing';
-import { AddNewLine } from './components/AddNewLine';
-import { RemoveLine } from './components/RemoveLine';
-import { Navbar } from './components/navbar';
+import { useFileStore } from './utils/zustand/file-store';
+import {
+  AddNewLine,
+  MakeFirstUpper,
+  MakeLastUpper,
+  RemoveLine,
+  LetterSpacing,
+  FontDropdown,
+  DropFile,
+  Navbar,
+} from './components';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import './App.css';
 
 function App() {
-  const ArialFont = 'Arial, sans-serif';
-  const TimesNewRomanFont = 'Times New Roman, serif';
-  const HelveticaFont = 'Helvetica, sans-serif';
-  const SegoeUIFont = 'Segoe UI, Tahoma, Geneva, Verdana, sans-serif';
-
-  const [isDragOver, setisDragOver] = useState<boolean>(false);
-  const [file, setFile] = useState<File[]>([]);
-  const [words, setWords] = useState<string>('');
-  const [fontFamily, changeFont] = useState<string>(ArialFont);
+  const { content, font, letterSpacing } = useFileStore();
 
   return (
-    <div className="App" id="container" style={{ fontFamily: fontFamily }}>
-      <Navbar></Navbar>
+    <div className="App" id="container" style={{ fontFamily: font }}>
+      <Navbar />
 
       <div
         style={{
@@ -33,93 +28,12 @@ function App() {
           justifyContent: 'center',
         }}
       >
-        <div className="dropdown">
-          <button
-            className="btn btn-primary dropdown-toggle"
-            type="button"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-            style={{ boxShadow: '2px 2px 10px #99aee7' }}
-          >
-            Pick Fonts
-          </button>
-          <ul className="dropdown-menu">
-            <li>
-              <a
-                className="dropdown-item"
-                href="#one"
-                onClick={() => changeFont(TimesNewRomanFont)}
-              >
-                Times new Roman{' '}
-              </a>
-            </li>
-            <li>
-              <a
-                className="dropdown-item"
-                href="#two"
-                onClick={() => changeFont(HelveticaFont)}
-              >
-                Helvetica
-              </a>
-            </li>
-            <li>
-              <a
-                className="dropdown-item"
-                href="#three"
-                onClick={() => changeFont(SegoeUIFont)}
-              >
-                Segoe UI
-              </a>
-            </li>
-            <li>
-              <a
-                className="dropdown-item"
-                href="#three"
-                onClick={() => changeFont(ArialFont)}
-              >
-                Arial Font
-              </a>
-            </li>
-          </ul>
-        </div>
-
-        <MakeUppercase
-          isDragOver={isDragOver}
-          setIsDragOver={setisDragOver}
-          file={file}
-          setFile={setFile}
-          words={words}
-          setWords={setWords}
-          fontFamily={fontFamily}
-        ></MakeUppercase>
-        <MakeLastUpper
-          isDragOver={isDragOver}
-          setIsDragOver={setisDragOver}
-          file={file}
-          setFile={setFile}
-          words={words}
-          setWords={setWords}
-          fontFamily={fontFamily}
-        ></MakeLastUpper>
-        <AddNewLine
-          isDragOver={isDragOver}
-          setIsDragOver={setisDragOver}
-          file={file}
-          setFile={setFile}
-          words={words}
-          setWords={setWords}
-          fontFamily={fontFamily}
-        ></AddNewLine>
-        <RemoveLine
-          isDragOver={isDragOver}
-          setIsDragOver={setisDragOver}
-          file={file}
-          setFile={setFile}
-          words={words}
-          setWords={setWords}
-          fontFamily={fontFamily}
-        ></RemoveLine>
-        <LetterSpacing font={fontFamily}></LetterSpacing>
+        <FontDropdown />
+        <MakeFirstUpper />
+        <MakeLastUpper />
+        <AddNewLine />
+        <RemoveLine />
+        <LetterSpacing />
       </div>
 
       <div
@@ -143,21 +57,14 @@ function App() {
             color: 'black',
             boxShadow: '2px 2px 10px #99aee7',
             padding: '40px',
-            display: words ? 'block' : 'none',
+            display: content ? 'block' : 'none',
+            letterSpacing: `${letterSpacing}px`,
           }}
           id="changeText11"
         >
-          {words}
+          {content}
         </p>
-        <DropFile
-          isDragOver={isDragOver}
-          setIsDragOver={setisDragOver}
-          file={file}
-          setFile={setFile}
-          words={words}
-          setWords={setWords}
-          fontFamily={fontFamily}
-        ></DropFile>
+        <DropFile />
       </div>
     </div>
   );

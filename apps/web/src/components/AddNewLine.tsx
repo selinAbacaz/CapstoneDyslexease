@@ -1,29 +1,23 @@
 import { Button } from 'react-bootstrap';
-import { DropFilesProps } from './FileDragger';
+import { useFileStore } from '../utils/zustand/file-store';
 
-//very interesting
+export function AddNewLine() {
+  const content = useFileStore((state) => state.content);
+  const setContent = useFileStore((state) => state.setContent);
 
-export function AddNewLine(props: DropFilesProps) {
   function addLine() {
-    const sentences = props.words.split('.');
-    const newLines = sentences
-      .map((senetence) => {
-        if (senetence !== '\n' && senetence !== '') {
-          return senetence + '.\n';
-        }
-      })
-      .join('');
-    props.setWords(newLines);
+    // RegEx to split on punctions but retain them in the actual string
+    const newContent = content.split(/(?<=[.?!])/g).join('\n');
+    setContent(newContent);
   }
 
   return (
     <Button
       style={{
-        fontFamily: props.fontFamily,
         boxShadow: '2px 2px 10px #99aee7',
       }}
       onClick={addLine}
-      disabled={props.words === ''}
+      disabled={content === ''}
     >
       Add a new Line
     </Button>

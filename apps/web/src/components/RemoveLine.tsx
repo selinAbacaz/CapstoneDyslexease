@@ -1,15 +1,30 @@
 import { Button } from 'react-bootstrap';
-import { DropFilesProps } from './FileDragger';
+import { useFileStore } from '../utils/zustand/file-store';
 
-export function RemoveLine(props: DropFilesProps) {
+export function RemoveLine() {
+  const content = useFileStore((state) => state.content);
+  const setContent = useFileStore((state) => state.setContent);
+
   function removeLine() {
-    const sentences = props.words.split('.\n');
-    const newLines = sentences.join('.');
-    props.setWords(newLines);
+    // RegEx to split on punctions but retain them in the actual string
+    const lines = content.split(/(?<=[.?!])/g);
+    const newLines: string[] = [];
+    for (const line of lines) {
+      const newLine = line.replace('\n', '');
+      newLines.push(newLine);
+    }
+
+    setContent(newLines.join(''));
   }
 
   return (
-    <Button onClick={removeLine} disabled={props.words === ''} style={{fontFamily: props.fontFamily, boxShadow: '2px 2px 10px #99aee7'}}>
+    <Button
+      onClick={removeLine}
+      disabled={content === ''}
+      style={{
+        boxShadow: '2px 2px 10px #99aee7',
+      }}
+    >
       Remove a Line
     </Button>
   );

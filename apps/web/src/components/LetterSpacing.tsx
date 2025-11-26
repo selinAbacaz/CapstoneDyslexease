@@ -1,40 +1,33 @@
-import { useState } from 'react';
+import { useFileStore } from '../utils/zustand/file-store';
 
-interface LetterSpacingProps {
-  font: string;
-}
-
-export function LetterSpacing({ font }: LetterSpacingProps) {
-  const [spacing, setSpacing] = useState<number>(0);
+export function LetterSpacing() {
+  const letterSpacing = useFileStore((state) => state.letterSpacing);
+  const setLetterSpacing = useFileStore((state) => state.setLetterSpacing);
 
   function changeSpacing(event: React.ChangeEvent<HTMLInputElement>) {
-    const input = event.target.value;
-    if (input.trim() === '') {
-      setSpacing(0);
-    } else {
-      const newSpacing = parseInt(event.target.value);
-      setSpacing(newSpacing);
-      const wordsElement = document.getElementById('changeText11');
-      if (wordsElement) {
-        wordsElement.style.letterSpacing = `${newSpacing}px`;
-      }
+    const newSpacing = Number(event.target.value);
+    if (newSpacing || newSpacing === 0) {
+      setLetterSpacing(newSpacing);
     }
   }
 
   return (
     <div>
-      <label htmlFor="Spacing" style={{ fontSize: '18px', fontFamily: font, color: '#4a6cc7'}}>
-        Change Letter Spacing: 
+      <label htmlFor="Spacing" style={{ fontSize: '18px', color: '#4a6cc7' }}>
+        Change Letter Spacing:
       </label>
       <input
         id="Spacing"
         name="Change Letter Spacing"
-        min={10}
-        max={100}
-        value={spacing}
+        value={letterSpacing}
         onChange={changeSpacing}
-        style={{color: '#4a6cc7',border: '1.5px solid #4a6cc7', borderRadius: '5px', marginLeft: '10px', fontFamily: font}}
-      ></input>
+        style={{
+          color: '#4a6cc7',
+          border: '1.5px solid #4a6cc7',
+          borderRadius: '5px',
+          marginLeft: '10px',
+        }}
+      />
     </div>
   );
 }

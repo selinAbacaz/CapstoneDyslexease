@@ -1,40 +1,33 @@
-import { DragEvent } from 'react';
+import { DragEvent, useState } from 'react';
 import * as pdfjsLib from 'pdfjs-dist';
 import mammoth from 'mammoth';
 
-import workerSrc from "pdfjs-dist/build/pdf.worker.mjs?url";
+import workerSrc from 'pdfjs-dist/build/pdf.worker.mjs?url';
+import { useFileStore } from '../utils/zustand/file-store';
 pdfjsLib.GlobalWorkerOptions.workerSrc = workerSrc;
 
+export function DropFile() {
+  const [isFileOver, setIsFileOver] = useState<boolean>(false);
+  const setContent = useFileStore((state) => state.setContent);
 
-export interface DropFilesProps {
-  isDragOver: boolean;
-  setIsDragOver: (newIsDragOver: boolean) => void;
-  file: File[];
-  setFile: (newFile: File[]) => void;
-  words: string;
-  setWords: (newWords: string) => void;
-  fontFamily: string;
-}
-
-export function DropFile(props: DropFilesProps) {
   async function extractText(file: File): Promise<string> {
     const ext = file.name.split('.').pop()?.toLowerCase();
 
     switch (ext) {
-      case "txt":
+      case 'txt':
         return readAsText(file);
-      case "pdf":
+      case 'pdf':
         return readPdf(file);
-      case "docx":
+      case 'docx':
         return readDocx(file);
       default:
-        return Promise.resolve("Unsupported file type\n");
+        return Promise.resolve('Unsupported file type\n');
     }
   }
 
   // TXT file reader
   function readAsText(file: File): Promise<string> {
-    return new Promise ((resolve) => {
+    return new Promise((resolve) => {
       const reader = new FileReader();
       reader.onload = () => resolve(reader.result as string);
       reader.readAsText(file);
@@ -64,20 +57,14 @@ export function DropFile(props: DropFilesProps) {
 
   function handleDragOver(event: DragEvent<HTMLDivElement>): void {
     event.preventDefault();
-    props.setIsDragOver(true);
-  }
-
-  function handleDragLeave(event: DragEvent<HTMLDivElement>): void {
-    event.preventDefault();
-    props.setIsDragOver(false);
+    setIsFileOver(true);
   }
 
   async function handleDrop(event: DragEvent<HTMLDivElement>) {
     event.preventDefault();
-    props.setIsDragOver(false);
+    setIsFileOver(false);
 
     const userFiles = Array.from(event.dataTransfer.files);
-    props.setFile(userFiles);
 
     let accumWords = '';
 
@@ -85,14 +72,13 @@ export function DropFile(props: DropFilesProps) {
       const extracted = await extractText(file);
       accumWords += extracted + '\n';
     }
-    props.setWords(accumWords);
+    setContent(accumWords);
   }
 
   return (
     <div>
       <div
         onDragOver={handleDragOver}
-        onDragLeave={handleDragLeave}
         onDrop={handleDrop}
         style={{
           margin: 'auto',
@@ -104,9 +90,8 @@ export function DropFile(props: DropFilesProps) {
           minHeight: '50vh',
           minWidth: '100vh',
           border: '1px dotted',
-          backgroundColor: props.isDragOver ? 'lightgray' : 'white',
+          backgroundColor: isFileOver ? 'gray' : 'white',
           color: 'black',
-          fontFamily: props.fontFamily,
           boxShadow: '2px 2px 10px #99aee7',
         }}
       >
