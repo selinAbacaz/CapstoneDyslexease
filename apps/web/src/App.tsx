@@ -8,6 +8,7 @@ import {
   FontDropdown,
   DropFile,
   Navbar,
+  ChangeBgColor,
 } from './components';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
@@ -33,6 +34,7 @@ function App() {
         <MakeLastUpper />
         <AddNewLine />
         <RemoveLine />
+        <ChangeBgColor />
         <LetterSpacing />
       </div>
 
