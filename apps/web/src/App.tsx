@@ -15,7 +15,8 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import './App.css';
 
 function App() {
-  const { content, font, letterSpacing, backgroundColor } = useFileStore();
+  const { content, font, letterSpacing, backgroundColor, maintextColor } =
+    useFileStore();
 
   return (
     <div
@@ -24,7 +25,8 @@ function App() {
       style={{
         fontFamily: font,
         backgroundColor: backgroundColor,
-        height: '100vh',
+        color: maintextColor,
+        minHeight: '100vh',
       }}
     >
       <Navbar />
@@ -64,7 +66,6 @@ function App() {
             textAlign: 'left',
             marginBottom: '50px',
             border: '1px dotted',
-            color: 'black',
             boxShadow: '2px 2px 10px #99aee7',
             padding: '40px',
             display: content ? 'block' : 'none',

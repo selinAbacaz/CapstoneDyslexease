@@ -13,7 +13,7 @@ export function LetterSpacing() {
 
   return (
     <div>
-      <label htmlFor="Spacing" style={{ fontSize: '18px', color: '#4a6cc7' }}>
+      <label htmlFor="Spacing" style={{ fontSize: '18px' }}>
         Change Letter Spacing:
       </label>
       <input
