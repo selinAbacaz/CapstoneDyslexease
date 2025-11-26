@@ -14,7 +14,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import './App.css';
 
 function App() {
-  const { content, font } = useFileStore();
+  const { content, font, letterSpacing } = useFileStore();
 
   return (
     <div className="App" id="container" style={{ fontFamily: font }}>
@@ -58,6 +58,7 @@ function App() {
             boxShadow: '2px 2px 10px #99aee7',
             padding: '40px',
             display: content ? 'block' : 'none',
+            letterSpacing: `${letterSpacing}px`,
           }}
           id="changeText11"
         >
