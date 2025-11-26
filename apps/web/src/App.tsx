@@ -15,10 +15,18 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import './App.css';
 
 function App() {
-  const { content, font, letterSpacing } = useFileStore();
+  const { content, font, letterSpacing, backgroundColor } = useFileStore();
 
   return (
-    <div className="App" id="container" style={{ fontFamily: font }}>
+    <div
+      className="App"
+      id="container"
+      style={{
+        fontFamily: font,
+        backgroundColor: backgroundColor,
+        height: '100vh',
+      }}
+    >
       <Navbar />
 
       <div

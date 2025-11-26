@@ -1,4 +1,8 @@
+import { useFileStore } from '../utils/zustand/file-store';
+
 export function ChangeBgColor() {
+  const setBackgroundColor = useFileStore((state) => state.setBackgroundColor);
+
   return (
     <div>
       <label
@@ -9,8 +13,9 @@ export function ChangeBgColor() {
       </label>
       <input
         id="bg-color-picker"
+        defaultValue="#FFFFFF"
         type="color"
-        onChange={(e) => console.log(e.target.value)}
+        onChange={(e) => setBackgroundColor(e.target.value)}
       />
     </div>
   );
