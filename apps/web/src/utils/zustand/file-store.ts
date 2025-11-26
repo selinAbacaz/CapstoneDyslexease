@@ -10,7 +10,7 @@ type FileStore = {
 
 export const useFileStore = create<FileStore>((set) => ({
   content: '',
-  font: FONTS.arial,
+  font: FONTS.arial.font,
   setContent: (newContent: string) => {
     set({ content: newContent });
   },
