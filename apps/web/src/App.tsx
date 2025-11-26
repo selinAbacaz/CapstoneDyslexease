@@ -10,6 +10,7 @@ import {
   LetterSpacing,
   FontDropdown,
   DropFile,
+  Navbar,
 } from './components';
 
 function App() {
