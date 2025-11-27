@@ -5,15 +5,21 @@ type FileStore = {
   content: string;
   font: string;
   letterSpacing: number;
+  backgroundColor: string;
+  maintextColor: string;
   setContent: (newContent: string) => void;
   setFont: (newFont: string) => void;
   setLetterSpacing: (newSpacing: number) => void;
+  setBackgroundColor: (newColor: string) => void;
+  setMainTextColor: (newTextColor: string) => void;
 };
 
 export const useFileStore = create<FileStore>((set) => ({
   content: '',
   font: FONTS.arial.font,
   letterSpacing: 0,
+  backgroundColor: '#FFFFFF',
+  maintextColor: 'black',
   setContent: (newContent: string) => {
     set({ content: newContent });
   },
@@ -22,5 +28,11 @@ export const useFileStore = create<FileStore>((set) => ({
   },
   setLetterSpacing: (newSpacing: number) => {
     set({ letterSpacing: newSpacing });
+  },
+  setBackgroundColor: (newColor: string) => {
+    set({ backgroundColor: newColor });
+  },
+  setMainTextColor: (newTextColor: string) => {
+    set({ maintextColor: newTextColor });
   },
 }));

@@ -6,3 +6,4 @@ export { MakeLastUpper } from './MakeLastUpper';
 export { LetterSpacing } from './LetterSpacing';
 export { FontDropdown } from './FontDropdown';
 export { Navbar } from './Navbar';
+export { ChangeBgColor } from './ChangeBgColor';

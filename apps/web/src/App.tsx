@@ -8,16 +8,27 @@ import {
   FontDropdown,
   DropFile,
   Navbar,
+  ChangeBgColor,
 } from './components';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import './App.css';
 
 function App() {
-  const { content, font, letterSpacing } = useFileStore();
+  const { content, font, letterSpacing, backgroundColor, maintextColor } =
+    useFileStore();
 
   return (
-    <div className="App" id="container" style={{ fontFamily: font }}>
+    <div
+      className="App"
+      id="container"
+      style={{
+        fontFamily: font,
+        backgroundColor: backgroundColor,
+        color: maintextColor,
+        minHeight: '100vh',
+      }}
+    >
       <Navbar />
 
       <div
@@ -33,6 +44,7 @@ function App() {
         <MakeLastUpper />
         <AddNewLine />
         <RemoveLine />
+        <ChangeBgColor />
         <LetterSpacing />
       </div>
 
@@ -54,7 +66,6 @@ function App() {
             textAlign: 'left',
             marginBottom: '50px',
             border: '1px dotted',
-            color: 'black',
             boxShadow: '2px 2px 10px #99aee7',
             padding: '40px',
             display: content ? 'block' : 'none',
