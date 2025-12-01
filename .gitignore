@@ -20,3 +20,17 @@ dist
 build
 
 .vscode
+
+# Editor Swap Files
+*.swp
+
+# Yarn PnP (Plug'n'Play) files
+.pnp.cjs
+.pnp.loader.mjs
+
+# Package Manager Lock files (ignoring yarn)
+yarn.lock
+
+# Ignore Yarn cache and releases
+.yarn
+.yarnrc.yml
