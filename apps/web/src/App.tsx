@@ -1,4 +1,5 @@
 import { useFileStore } from './utils/zustand/file-store';
+import { applyLetterSwapping } from './utils/textTransformer';
 import {
   AddNewLine,
   MakeFirstUpper,
@@ -9,14 +10,17 @@ import {
   DropFile,
   Navbar,
   ChangeBgColor,
+  LetterSwapControl,
 } from './components';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import './App.css';
 
 function App() {
-  const { content, font, letterSpacing, backgroundColor, maintextColor } =
+  const { content, font, letterSpacing, backgroundColor, maintextColor, swapPairs } =
     useFileStore();
+
+  const processedContent = applyLetterSwapping(content, swapPairs);
 
   return (
     <div
@@ -37,6 +41,7 @@ function App() {
           gap: '10px',
           marginTop: '5vh',
           justifyContent: 'center',
+          flexWrap: 'wrap'
         }}
       >
         <FontDropdown />
@@ -46,6 +51,7 @@ function App() {
         <RemoveLine />
         <ChangeBgColor />
         <LetterSpacing />
+        <LetterSwapControl />
       </div>
 
       <div
@@ -73,7 +79,7 @@ function App() {
           }}
           id="changeText11"
         >
-          {content}
+          {processedContent}
         </p>
         <DropFile />
       </div>
