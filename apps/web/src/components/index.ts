@@ -7,3 +7,4 @@ export { LetterSpacing } from './LetterSpacing';
 export { FontDropdown } from './FontDropdown';
 export { Navbar } from './Navbar';
 export { ChangeBgColor } from './ChangeBgColor';
+export { default as LetterSwapControl } from './LetterSwapControl';
