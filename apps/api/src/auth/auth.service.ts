@@ -118,6 +118,8 @@ export class AuthService {
       path: '/auth/refresh',
       secure: process.env.USE_SECURE === 'true',
     });
+
+    return { logout: 'done' };
   }
 
   async checkRefresh(
