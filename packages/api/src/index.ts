@@ -1,2 +1,2 @@
 export { UserOut } from './user';
-export { Auth } from './auth';
+export { Auth, TokenOut } from './auth';

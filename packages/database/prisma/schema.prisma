@@ -12,27 +12,17 @@ generator client {
   output   = "../generated/client"
 }
 
-model Authentication {
-  auth_cuid   String   @id @default(cuid())
-  provider    String?
-  provider_id String?
-  user_cuid   String?
-  created_at  DateTime @default(now())
-  modified_at DateTime @updatedAt
-  user        User?    @relation(fields: [user_cuid], references: [user_cuid])
-}
-
 model User {
-  user_cuid       String           @id @default(cuid())
-  username        String?
-  email           String?
-  password_hash   String?
-  user_pref_cuid  String?
-  created_at      DateTime         @default(now())
-  modified_at     DateTime         @updatedAt
-  user_pref       UserPreference?  @relation(fields: [user_pref_cuid], references: [user_pref_cuid])
-  authentications Authentication[]
-  files           File[]
+  user_cuid          String          @id @default(cuid())
+  username           String          @unique
+  email              String          @unique
+  password_hash      String
+  refresh_token_hash String?
+  user_pref_cuid     String?
+  created_at         DateTime        @default(now())
+  modified_at        DateTime        @updatedAt
+  user_pref          UserPreference? @relation(fields: [user_pref_cuid], references: [user_pref_cuid])
+  files              File[]
 }
 
 model UserPreference {
@@ -44,7 +34,7 @@ model UserPreference {
   capitalization_cuid  String?
   letter_swap_cuid     String?
   created_at           DateTime        @default(now())
-  modified_at          DateTime        @default(now()) @updatedAt
+  modified_at          DateTime        @updatedAt
   capitalization       Capitalization? @relation(fields: [capitalization_cuid], references: [capitalization_cuid])
   letter_swap          LetterSwap?     @relation(fields: [letter_swap_cuid], references: [letter_swap_cuid])
   users                User[]
@@ -64,7 +54,7 @@ model LetterSwap {
   letter1          String           @db.Char(1)
   letter2          String           @db.Char(1)
   created_at       DateTime         @default(now())
-  modified_at      DateTime         @default(now()) @updatedAt
+  modified_at      DateTime         @updatedAt
   user_preferences UserPreference[]
 }
 

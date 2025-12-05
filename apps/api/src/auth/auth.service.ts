@@ -4,7 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
-import { Auth } from '@repo/api/auth';
+import { Auth, TokenOut } from '@repo/api/auth';
 import { JwtService } from '@nestjs/jwt';
 import { UserOut } from '@repo/api/user';
 import * as bcrypt from 'bcrypt';
@@ -16,7 +16,11 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  private async generateTokens({ user_cuid, username, email }: UserOut) {
+  private async generateTokens({
+    user_cuid,
+    username,
+    email,
+  }: UserOut): Promise<TokenOut> {
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.signAsync(
         { sub: user_cuid, username, email },
@@ -31,7 +35,7 @@ export class AuthService {
     return { accessToken, refreshToken };
   }
 
-  async signUp(signUpDto: Auth) {
+  async signUp(signUpDto: Auth): Promise<TokenOut> {
     const hash_password = await bcrypt.hash(signUpDto.password, 10);
     const newUser = await this.prisma.user.create({
       data: {
@@ -50,17 +54,20 @@ export class AuthService {
     return this.generateTokens(newUser);
   }
 
-  async login(loginDto: Auth) {
-    const user = await this.prisma.user.findFirst({
+  async login(loginDto: Auth): Promise<TokenOut> {
+    const user = await this.prisma.user.findUnique({
       where: { username: loginDto.username },
     });
 
-    if (!user) {
-      throw new NotFoundException('Incorrect Username');
-    }
+    if (!user) throw new NotFoundException('Incorrect Credentials!');
 
-    if (!(await bcrypt.compare(loginDto.password, user.password_hash))) {
-      throw new ForbiddenException('Incorrect Password');
+    const isValidPassword = await bcrypt.compare(
+      loginDto.password,
+      user.password_hash,
+    );
+
+    if (!isValidPassword) {
+      throw new ForbiddenException('Incorrect Credentials!');
     }
 
     return this.generateTokens(user);
