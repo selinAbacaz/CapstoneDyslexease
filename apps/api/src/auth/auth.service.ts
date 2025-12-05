@@ -104,8 +104,23 @@ export class AuthService {
 
   async logout(user_cuid: string) {
     await this.prisma.user.update({
-      where: { user_cuid: user_cuid },
+      where: { user_cuid },
       data: { refresh_token_hash: null },
     });
+  }
+
+  async checkRefresh(user_cuid: string, refreshToken: string) {
+    const user = await this.prisma.user.findUnique({ where: { user_cuid } });
+
+    if (!user) throw new ForbiddenException('Access Denied');
+
+    const isValidToken = bcrypt.compare(refreshToken, user.refresh_token_hash);
+
+    if (!isValidToken) throw new ForbiddenException('Access Denied');
+
+    const tokens = await this.generateTokens(user);
+    await this.updateRefreshToken(user.user_cuid, tokens.refreshToken);
+
+    return tokens;
   }
 }

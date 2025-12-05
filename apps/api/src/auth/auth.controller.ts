@@ -4,6 +4,8 @@ import { AuthService } from './auth.service';
 import { AuthGuard } from '@nestjs/passport';
 import { CurrentUser } from 'src/decorators/current-user.decorator';
 import { JwtUser } from 'src/strategies/jwt.strategy';
+import { CurrentUserRefresh } from 'src/decorators/current-user-refresh.decorator';
+import { JwtUserRefresh } from 'src/strategies/jwt-refresh.strategy';
 
 @Controller('auth')
 export class AuthController {
@@ -23,5 +25,11 @@ export class AuthController {
   @UseGuards(AuthGuard('jwt'))
   logout(@CurrentUser() user: JwtUser) {
     return this.authService.logout(user.user_cuid);
+  }
+
+  @Post('refresh')
+  @UseGuards(AuthGuard('jwt-refresh'))
+  checkRefresh(@CurrentUserRefresh() user: JwtUserRefresh): Promise<TokenOut> {
+    return this.authService.checkRefresh(user.user_cuid, user.refreshToken);
   }
 }
