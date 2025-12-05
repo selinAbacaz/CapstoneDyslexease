@@ -2,6 +2,8 @@ import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { Auth, TokenOut } from '@repo/api/auth';
 import { AuthService } from './auth.service';
 import { AuthGuard } from '@nestjs/passport';
+import { CurrentUser } from 'src/decorators/current-user.decorator';
+import { JwtUser } from 'src/strategies/jwt.strategy';
 
 @Controller('auth')
 export class AuthController {
@@ -19,5 +21,7 @@ export class AuthController {
 
   @Post('logout')
   @UseGuards(AuthGuard('jwt'))
-  logout() {}
+  logout(@CurrentUser() user: JwtUser) {
+    return this.authService.logout(user.user_cuid);
+  }
 }

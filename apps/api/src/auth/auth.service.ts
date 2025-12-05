@@ -1,9 +1,14 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  ForbiddenException,
+  Injectable,
+} from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { Auth, TokenOut } from '@repo/api/auth';
 import { JwtService } from '@nestjs/jwt';
 import { UserOut } from '@repo/api/user';
 import * as bcrypt from 'bcrypt';
+import { Prisma } from '@repo/database';
 
 @Injectable()
 export class AuthService {
@@ -41,19 +46,33 @@ export class AuthService {
 
   async signUp(signUpDto: Auth): Promise<TokenOut> {
     const hash_password = await bcrypt.hash(signUpDto.password, 10);
-    const newUser = await this.prisma.user.create({
-      data: {
-        username: signUpDto.username,
-        password_hash: hash_password,
-        email: signUpDto.email,
-      },
-      select: {
-        user_cuid: true,
-        username: true,
-        email: true,
-        user_pref_cuid: true,
-      },
-    });
+
+    let newUser: UserOut;
+    try {
+      newUser = await this.prisma.user.create({
+        data: {
+          username: signUpDto.username,
+          password_hash: hash_password,
+          email: signUpDto.email,
+        },
+        select: {
+          user_cuid: true,
+          username: true,
+          email: true,
+          user_pref_cuid: true,
+        },
+      });
+    } catch (error) {
+      if (
+        error instanceof Prisma.PrismaClientKnownRequestError &&
+        error.code === 'P2002'
+      ) {
+        throw new ConflictException(
+          `A user with that information already exists`,
+        );
+      }
+      throw error;
+    }
 
     const tokens = await this.generateTokens(newUser);
     await this.updateRefreshToken(newUser.user_cuid, tokens.refreshToken);
@@ -81,5 +100,12 @@ export class AuthService {
     await this.updateRefreshToken(user.user_cuid, tokens.refreshToken);
 
     return tokens;
+  }
+
+  async logout(user_cuid: string) {
+    await this.prisma.user.update({
+      where: { user_cuid: user_cuid },
+      data: { refresh_token_hash: null },
+    });
   }
 }
