@@ -111,7 +111,13 @@ export class AuthService {
       data: { refresh_token_hash: null },
     });
 
-    response.clearCookie('refresh');
+    response.clearCookie('refresh', {
+      httpOnly: true,
+      maxAge: 1000 * 60 * 10,
+      sameSite: 'strict',
+      path: '/auth/refresh',
+      secure: process.env.USE_SECURE === 'true',
+    });
   }
 
   async checkRefresh(

@@ -26,22 +26,7 @@ export class JwtRefreshStrategy extends PassportStrategy(
   constructor() {
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([
-        (request: Request) => {
-          const cookies = request.headers.cookie?.split('; ');
-          if (!cookies?.length) {
-            return null;
-          }
-
-          const refreshTokenCookie = cookies.find((cookie) =>
-            cookie.startsWith(`refresh=`),
-          );
-
-          if (!refreshTokenCookie) {
-            return null;
-          }
-
-          return refreshTokenCookie.split('=')[1] as string;
-        },
+        (request: Request) => this.extractToken(request),
       ]),
       ignoreExpiration: false,
       secretOrKey: process.env.JWT_REFRESH_SECRET,
@@ -49,13 +34,28 @@ export class JwtRefreshStrategy extends PassportStrategy(
     });
   }
 
+  extractToken(request: Request) {
+    const cookies = request.headers.cookie?.split('; ');
+    if (!cookies?.length) {
+      return null;
+    }
+
+    const refreshTokenCookie = cookies.find((cookie) =>
+      cookie.startsWith(`refresh=`),
+    );
+
+    if (!refreshTokenCookie) {
+      return null;
+    }
+
+    return refreshTokenCookie.split('=')[1];
+  }
+
   validate(
     request: Request,
     { sub, username, email }: JwtPayload,
   ): JwtUserRefresh {
-    const refreshToken = request.headers.authorization
-      .replace('Bearer', '')
-      .trim();
+    const refreshToken = this.extractToken(request);
     const newJwtUserRefresh: JwtUserRefresh = {
       user_cuid: sub,
       username,
