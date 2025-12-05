@@ -9,6 +9,7 @@ import { JwtService } from '@nestjs/jwt';
 import { UserOut } from '@repo/api/user';
 import * as bcrypt from 'bcrypt';
 import { Prisma } from '@repo/database';
+import { Response } from 'express';
 
 @Injectable()
 export class AuthService {
@@ -17,11 +18,10 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  private async generateTokens({
-    user_cuid,
-    username,
-    email,
-  }: UserOut): Promise<TokenOut> {
+  private async generateTokens(
+    { user_cuid, username, email }: UserOut,
+    response: Response,
+  ): Promise<TokenOut> {
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.signAsync(
         { sub: user_cuid, username, email },
@@ -29,22 +29,31 @@ export class AuthService {
       ),
       this.jwtService.signAsync(
         { sub: user_cuid, username, email },
-        { expiresIn: '10m', secret: process.env.JWT_REFRESH_SECRET },
+        {
+          expiresIn: '10m',
+          secret: process.env.JWT_REFRESH_SECRET,
+        },
       ),
     ]);
 
-    return { accessToken, refreshToken };
-  }
-
-  private async updateRefreshToken(user_cuid: string, refreshToken: string) {
     const refresh_token_hash = await bcrypt.hash(refreshToken, 10);
     await this.prisma.user.update({
       where: { user_cuid },
       data: { refresh_token_hash },
     });
+
+    response.cookie('refresh', refreshToken, {
+      httpOnly: true,
+      maxAge: 1000 * 60 * 10,
+      sameSite: 'strict',
+      path: '/auth/refresh',
+      secure: process.env.USE_SECURE === 'true',
+    });
+
+    return { accessToken };
   }
 
-  async signUp(signUpDto: Auth): Promise<TokenOut> {
+  async signUp(signUpDto: Auth, response: Response): Promise<TokenOut> {
     const hash_password = await bcrypt.hash(signUpDto.password, 10);
 
     let newUser: UserOut;
@@ -74,13 +83,10 @@ export class AuthService {
       throw error;
     }
 
-    const tokens = await this.generateTokens(newUser);
-    await this.updateRefreshToken(newUser.user_cuid, tokens.refreshToken);
-
-    return tokens;
+    return await this.generateTokens(newUser, response);
   }
 
-  async login(loginDto: Auth): Promise<TokenOut> {
+  async login(loginDto: Auth, response: Response): Promise<TokenOut> {
     const user = await this.prisma.user.findUnique({
       where: { username: loginDto.username },
     });
@@ -96,20 +102,23 @@ export class AuthService {
       throw new ForbiddenException('Incorrect Credentials!');
     }
 
-    const tokens = await this.generateTokens(user);
-    await this.updateRefreshToken(user.user_cuid, tokens.refreshToken);
-
-    return tokens;
+    return await this.generateTokens(user, response);
   }
 
-  async logout(user_cuid: string) {
+  async logout(user_cuid: string, response: Response) {
     await this.prisma.user.update({
       where: { user_cuid },
       data: { refresh_token_hash: null },
     });
+
+    response.clearCookie('refresh');
   }
 
-  async checkRefresh(user_cuid: string, refreshToken: string) {
+  async checkRefresh(
+    user_cuid: string,
+    refreshToken: string,
+    response: Response,
+  ): Promise<TokenOut> {
     const user = await this.prisma.user.findUnique({ where: { user_cuid } });
 
     if (!user) throw new ForbiddenException('Access Denied');
@@ -118,9 +127,6 @@ export class AuthService {
 
     if (!isValidToken) throw new ForbiddenException('Access Denied');
 
-    const tokens = await this.generateTokens(user);
-    await this.updateRefreshToken(user.user_cuid, tokens.refreshToken);
-
-    return tokens;
+    return await this.generateTokens(user, response);
   }
 }
