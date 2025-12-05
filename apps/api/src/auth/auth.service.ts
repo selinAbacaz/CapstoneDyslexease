@@ -1,8 +1,4 @@
-import {
-  ForbiddenException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { Auth, TokenOut } from '@repo/api/auth';
 import { JwtService } from '@nestjs/jwt';
@@ -24,15 +20,23 @@ export class AuthService {
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.signAsync(
         { sub: user_cuid, username, email },
-        { expiresIn: '2m', secret: process.env.JWT_SECRET },
+        { expiresIn: '2m', secret: process.env.JWT_ACCESS_SECRET },
       ),
       this.jwtService.signAsync(
         { sub: user_cuid, username, email },
-        { expiresIn: '10m', secret: process.env.JWT_SECRET },
+        { expiresIn: '10m', secret: process.env.JWT_REFRESH_SECRET },
       ),
     ]);
 
     return { accessToken, refreshToken };
+  }
+
+  private async updateRefreshToken(user_cuid: string, refreshToken: string) {
+    const refresh_token_hash = await bcrypt.hash(refreshToken, 10);
+    await this.prisma.user.update({
+      where: { user_cuid },
+      data: { refresh_token_hash },
+    });
   }
 
   async signUp(signUpDto: Auth): Promise<TokenOut> {
@@ -51,7 +55,10 @@ export class AuthService {
       },
     });
 
-    return this.generateTokens(newUser);
+    const tokens = await this.generateTokens(newUser);
+    await this.updateRefreshToken(newUser.user_cuid, tokens.refreshToken);
+
+    return tokens;
   }
 
   async login(loginDto: Auth): Promise<TokenOut> {
@@ -59,7 +66,7 @@ export class AuthService {
       where: { username: loginDto.username },
     });
 
-    if (!user) throw new NotFoundException('Incorrect Credentials!');
+    if (!user) throw new ForbiddenException('Incorrect Credentials!');
 
     const isValidPassword = await bcrypt.compare(
       loginDto.password,
@@ -70,6 +77,9 @@ export class AuthService {
       throw new ForbiddenException('Incorrect Credentials!');
     }
 
-    return this.generateTokens(user);
+    const tokens = await this.generateTokens(user);
+    await this.updateRefreshToken(user.user_cuid, tokens.refreshToken);
+
+    return tokens;
   }
 }
