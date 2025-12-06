@@ -1,4 +1,11 @@
-import { Body, Controller, Get, Post, Res, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  HttpCode,
+  Post,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import { Auth, TokenOut } from '@repo/api/auth';
 import { AuthService } from './auth.service';
 import { AuthGuard } from '@nestjs/passport';
@@ -21,6 +28,7 @@ export class AuthController {
   }
 
   @Post('login')
+  @HttpCode(200)
   login(
     @Body() loginDto: Auth,
     @Res({ passthrough: true }) response: Response,
@@ -29,6 +37,7 @@ export class AuthController {
   }
 
   @Post('logout')
+  @HttpCode(200)
   @UseGuards(AuthGuard('jwt'))
   logout(
     @CurrentUser() user: JwtUser,
@@ -38,6 +47,7 @@ export class AuthController {
   }
 
   @Post('refresh')
+  @HttpCode(200)
   @UseGuards(AuthGuard('jwt-refresh'))
   checkRefresh(
     @CurrentUserRefresh() user: JwtUserRefresh,
