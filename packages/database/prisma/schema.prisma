@@ -32,7 +32,7 @@ model FilePreference {
   font_size            Int?
   created_at           DateTime     @default(now())
   modified_at          DateTime     @updatedAt
-  file                 File         @relation(references: [file_cuid], fields: [file_cuid])
+  file                 File         @relation(references: [file_cuid], fields: [file_cuid], onDelete: Cascade)
   letterSwaps          LetterSwap[]
 }
 
@@ -43,7 +43,7 @@ model LetterSwap {
   letter2          String         @db.Char(1)
   created_at       DateTime       @default(now())
   modified_at      DateTime       @updatedAt
-  file_pref        FilePreference @relation(fields: [file_pref_cuid], references: [file_pref_cuid])
+  file_pref        FilePreference @relation(fields: [file_pref_cuid], references: [file_pref_cuid], onDelete: Cascade)
 }
 
 model File {
@@ -55,6 +55,6 @@ model File {
   extracted_text String          @default("")
   created_at     DateTime        @default(now())
   modified_at    DateTime        @updatedAt
-  users          User            @relation(fields: [user_cuid], references: [user_cuid])
+  users          User            @relation(fields: [user_cuid], references: [user_cuid], onDelete: Cascade)
   file_pref      FilePreference?
 }
