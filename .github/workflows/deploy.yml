@@ -38,6 +38,8 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Build
+        env:
+          VITE_BACKEND_URL: ${{ secrets.VITE_BACKEND_URL }}
         working-directory: ./apps/web
         run: npm run build
       - name: Setup Pages
