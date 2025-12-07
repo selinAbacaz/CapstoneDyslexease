@@ -25,12 +25,12 @@ export class AuthService {
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.signAsync(
         { sub: user_cuid, username, email },
-        { expiresIn: '2m', secret: process.env.JWT_ACCESS_SECRET },
+        { expiresIn: '15m', secret: process.env.JWT_ACCESS_SECRET },
       ),
       this.jwtService.signAsync(
         { sub: user_cuid, username, email },
         {
-          expiresIn: '10m',
+          expiresIn: '30d',
           secret: process.env.JWT_REFRESH_SECRET,
         },
       ),
@@ -44,7 +44,7 @@ export class AuthService {
 
     response.cookie('refresh', refreshToken, {
       httpOnly: true,
-      maxAge: 1000 * 60 * 10,
+      maxAge: 1000 * 60 * 60 * 24 * 30,
       sameSite: 'strict',
       path: '/auth/refresh',
       secure: process.env.USE_SECURE === 'true',
@@ -112,7 +112,7 @@ export class AuthService {
 
     response.clearCookie('refresh', {
       httpOnly: true,
-      maxAge: 1000 * 60 * 10,
+      maxAge: 1000 * 60 * 60 * 24 * 30,
       sameSite: 'strict',
       path: '/auth/refresh',
       secure: process.env.USE_SECURE === 'true',
