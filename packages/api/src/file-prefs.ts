@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { CreateSwap, SwapOut } from './swap';
+import { CreateSwap, SwapOut, UpdateSwap } from './swap';
 
 export const CreateFilePrefs = z.object({
   file_cuid: z.cuid(),
@@ -20,3 +20,18 @@ export const FilePrefsOut = z.object({
   letterSwaps: z.array(SwapOut),
 });
 export type FilePrefsOut = z.infer<typeof FilePrefsOut>;
+
+export const UpdateFilePrefs = z.object({
+  file_pref_cuid: z.cuid(),
+  text_color_hex: z.string().optional(),
+  background_color_hex: z.string().optional(),
+  text_spacing: z.int().optional(),
+  font_szie: z.int().optional(),
+  letterSwaps: z.array(UpdateSwap.omit({ letter_swap_cuid: true })),
+});
+export type UpdateFilePrefs = z.infer<typeof UpdateFilePrefs>;
+
+export const DeleteFilePrefs = z.object({
+  file_pref_cuid: z.cuid(),
+});
+export type DeleteFilePrefs = z.infer<typeof DeleteFilePrefs>;

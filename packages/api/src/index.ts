@@ -6,5 +6,10 @@ export {
   FileOut,
   FileOutWithPrefs,
 } from './files';
-export { CreateFilePrefs, FilePrefsOut } from './file-prefs';
+export {
+  CreateFilePrefs,
+  FilePrefsOut,
+  UpdateFilePrefs,
+  DeleteFilePrefs,
+} from './file-prefs';
 export { CreateSwap, SwapOut, UpdateSwap, DeleteSwap } from './swap';
