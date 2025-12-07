@@ -15,8 +15,6 @@ import {
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import './App.css';
-import { useFetchBackend } from './utils/fetching';
-import { UserOut } from '@repo/api/user';
 
 function App() {
   const {
@@ -27,8 +25,6 @@ function App() {
     maintextColor,
     swapPairs,
   } = useFileStore();
-  const { data } = useFetchBackend<UserOut>('/users/me');
-
   const processedContent = applyLetterSwapping(content, swapPairs);
 
   return (
@@ -61,7 +57,6 @@ function App() {
         <ChangeBgColor />
         <LetterSpacing />
         <LetterSwapControl />
-        {data && <div>{JSON.stringify(data)}</div>}
       </div>
 
       <div

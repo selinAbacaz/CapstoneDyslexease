@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useUserStore } from './zustand/user-store';
+import { useAuthStore } from './zustand/auth-store';
 import { TokenOut } from '@repo/api/auth';
 
 type Method = 'POST' | 'PUT' | 'PATCH' | 'DELETE';
@@ -7,7 +7,7 @@ type Method = 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL as string;
 
 async function fetcher(endpoint: string, init: RequestInit) {
-  const { token, setToken } = useUserStore.getState();
+  const { token, setToken, setIsAuthenticated } = useAuthStore.getState();
 
   async function mainRequest(accessToken: string) {
     return await fetch(`${BACKEND_URL}${endpoint}`, {
@@ -32,6 +32,7 @@ async function fetcher(endpoint: string, init: RequestInit) {
     if (tokenResponse.ok) {
       const newToken = (await tokenResponse.json()) as TokenOut;
       setToken(newToken.accessToken);
+      setIsAuthenticated(true);
 
       let newResponse = await mainRequest(newToken.accessToken);
       return newResponse;
@@ -45,6 +46,7 @@ export function useFetchBackend<T>(endpoint: string) {
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState<T | null>(null);
   const [error, setError] = useState<Error | null>(null);
+  const pressedLogin = useAuthStore((state) => state.pressedLogin);
 
   useEffect(() => {
     let ignore = false;
@@ -74,19 +76,18 @@ export function useFetchBackend<T>(endpoint: string) {
     return () => {
       ignore = true;
     };
-  }, []);
+  }, [pressedLogin]);
 
   return { data, error, isLoading };
 }
 
 export function useMutateBackend<T, K>(endpoint: string, method: Method) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [data, setData] = useState<K | null>(null);
   const [error, setError] = useState<Error | null>(null);
   const [success, setSuccess] = useState<boolean>(false);
 
   async function mutate(variables: T) {
-    setData(null);
+    let newData: K | null = null;
     setError(null);
     setSuccess(false);
     setIsLoading(true);
@@ -99,16 +100,16 @@ export function useMutateBackend<T, K>(endpoint: string, method: Method) {
       if (!response.ok) {
         setError(new Error(`${response.status}: ${response.statusText}`));
       } else {
-        const newData = await response.json();
-        setData(newData);
+        newData = await response.json();
         setSuccess(true);
       }
     } catch {
       setError(new Error(`Failed to Mutate!`));
     } finally {
       setIsLoading(false);
+      return newData;
     }
   }
 
-  return { data, isLoading, error, success, mutate };
+  return { isLoading, error, success, mutate };
 }
