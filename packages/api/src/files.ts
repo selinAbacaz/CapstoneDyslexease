@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { CreateFilePrefs, FilePrefsOut } from './file-prefs';
 
 export const CreateFile = z.object({
   file_name: z.string(),
@@ -9,10 +10,7 @@ export type CreateFile = z.infer<typeof CreateFile>;
 export const CreateFileWithPrefs = z.object({
   file_name: z.string(),
   extracted_text: z.string().optional(),
-  text_color_hex: z.string().optional(),
-  background_color_hex: z.string().optional(),
-  text_spacing: z.int().optional(),
-  font_szie: z.int().optional(),
+  file_pref: CreateFilePrefs,
 });
 export type CreateFileWithPrefs = z.infer<typeof CreateFileWithPrefs>;
 
@@ -27,9 +25,6 @@ export const FileOutWithPrefs = z.object({
   file_cuid: z.cuid(),
   file_name: z.string(),
   extracted_text: z.string(),
-  text_color_hex: z.string().nullable(),
-  background_color_hex: z.string().nullable(),
-  text_spacing: z.int().nullable(),
-  font_szie: z.int().nullable(),
+  file_pref: FilePrefsOut,
 });
 export type FileOutWithPrefs = z.infer<typeof FileOutWithPrefs>;

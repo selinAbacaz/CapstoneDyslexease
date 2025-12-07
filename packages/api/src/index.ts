@@ -6,3 +6,4 @@ export {
   FileOut,
   FileOutWithPrefs,
 } from './files';
+export { CreateFilePrefs, FilePrefsOut } from './file-prefs';
