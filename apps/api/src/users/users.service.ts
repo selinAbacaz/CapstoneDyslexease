@@ -6,13 +6,13 @@ import { UserOut } from '@repo/api/user';
 export class UsersService {
   constructor(private prisma: PrismaService) {}
 
-  findAll(): Promise<UserOut[]> {
-    return this.prisma.user.findMany({
+  findOne(user_cuid: string): Promise<UserOut> {
+    return this.prisma.user.findUnique({
+      where: { user_cuid },
       select: {
         user_cuid: true,
         username: true,
         email: true,
-        user_pref_cuid: true,
       },
     });
   }

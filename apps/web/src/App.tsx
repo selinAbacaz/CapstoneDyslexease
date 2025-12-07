@@ -17,9 +17,14 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import './App.css';
 
 function App() {
-  const { content, font, letterSpacing, backgroundColor, maintextColor, swapPairs } =
-    useFileStore();
-
+  const {
+    content,
+    font,
+    letterSpacing,
+    backgroundColor,
+    maintextColor,
+    swapPairs,
+  } = useFileStore();
   const processedContent = applyLetterSwapping(content, swapPairs);
 
   return (
@@ -41,7 +46,7 @@ function App() {
           gap: '10px',
           marginTop: '5vh',
           justifyContent: 'center',
-          flexWrap: 'wrap'
+          flexWrap: 'wrap',
         }}
       >
         <FontDropdown />
