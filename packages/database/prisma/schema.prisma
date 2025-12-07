@@ -52,7 +52,7 @@ model File {
   file_name      String
   file_type      String?
   file_link      String?
-  extracted_text String?
+  extracted_text String          @default("")
   created_at     DateTime        @default(now())
   modified_at    DateTime        @updatedAt
   users          User            @relation(fields: [user_cuid], references: [user_cuid])
