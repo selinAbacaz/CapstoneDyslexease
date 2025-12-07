@@ -27,7 +27,7 @@ export const UpdateFilePrefs = z.object({
   background_color_hex: z.string().optional(),
   text_spacing: z.int().optional(),
   font_szie: z.int().optional(),
-  letterSwaps: z.array(UpdateSwap.omit({ letter_swap_cuid: true })),
+  letterSwaps: z.array(UpdateSwap),
 });
 export type UpdateFilePrefs = z.infer<typeof UpdateFilePrefs>;
 

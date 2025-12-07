@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { CreateFilePrefs, FilePrefsOut } from './file-prefs';
+import { CreateFilePrefs, FilePrefsOut, UpdateFilePrefs } from './file-prefs';
 
 export const CreateFile = z.object({
   file_name: z.string(),
@@ -28,3 +28,16 @@ export const FileOutWithPrefs = z.object({
   file_pref: FilePrefsOut,
 });
 export type FileOutWithPrefs = z.infer<typeof FileOutWithPrefs>;
+
+export const UpdateFileAndPrefs = z.object({
+  file_cuid: z.cuid(),
+  file_name: z.string().optional(),
+  extracted_text: z.string().optional(),
+  file_pref: UpdateFilePrefs.omit({ file_pref_cuid: true }),
+});
+export type UpdateFileAndPrefs = z.infer<typeof UpdateFileAndPrefs>;
+
+export const DeleteFile = z.object({
+  file_cuid: z.string(),
+});
+export type DeleteFile = z.infer<typeof DeleteFile>;

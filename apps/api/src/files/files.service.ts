@@ -7,9 +7,12 @@ import { PrismaService } from 'src/prisma.service';
 import {
   CreateFile,
   CreateFileWithPrefs,
+  DeleteFile,
   FileOut,
   FileOutWithPrefs,
+  UpdateFileAndPrefs,
 } from '@repo/api/files';
+import { Prisma } from '@repo/database';
 
 @Injectable()
 export class FilesService {
@@ -102,7 +105,7 @@ export class FilesService {
           create: {
             ...pref,
             letterSwaps: {
-              createMany: { skipDuplicates: true, data: { ...letterSwaps } },
+              create: letterSwaps,
             },
           },
         },
@@ -125,5 +128,123 @@ export class FilesService {
         },
       },
     });
+  }
+
+  async updateFileAndPrefs(
+    updateFileDto: UpdateFileAndPrefs,
+    user_cuid: string,
+  ): Promise<FileOutWithPrefs> {
+    const {
+      file_cuid,
+      file_pref: { letterSwaps, ...prefs },
+      ...updatedFile
+    } = updateFileDto;
+
+    try {
+      const updates = await this.prisma.file.update({
+        where: { file_cuid, user_cuid },
+        data: {
+          ...updatedFile,
+          file_pref: {
+            update: {
+              data: prefs,
+            },
+          },
+        },
+        select: {
+          file_cuid: true,
+          file_name: true,
+          extracted_text: true,
+          file_pref: {
+            select: {
+              file_pref_cuid: true,
+              text_color_hex: true,
+              background_color_hex: true,
+              text_spacing: true,
+              font_size: true,
+            },
+          },
+        },
+      });
+
+      const updatedSwaps = await Promise.all(
+        letterSwaps.map(async ({ letter_swap_cuid, ...updateSwaps }) =>
+          this.prisma.letterSwap.update({
+            where: { letter_swap_cuid, file_pref: { file: { user_cuid } } },
+            data: updateSwaps,
+            select: { letter_swap_cuid: true, letter1: true, letter2: true },
+          }),
+        ),
+      );
+
+      return {
+        ...updates,
+        file_pref: { ...updates.file_pref, letterSwaps: updatedSwaps },
+      };
+    } catch (error) {
+      if (
+        error instanceof Prisma.PrismaClientKnownRequestError &&
+        error.code === 'P2025'
+      ) {
+        const existingFile = await this.prisma.file.findUnique({
+          where: { file_cuid },
+        });
+
+        if (!existingFile) {
+          throw new NotFoundException('This file does not exist');
+        } else {
+          throw new ForbiddenException('Access Denied');
+        }
+      }
+    }
+  }
+
+  async deleteFile(
+    deleteFileDto: DeleteFile,
+    user_cuid: string,
+  ): Promise<FileOutWithPrefs> {
+    const { file_cuid } = deleteFileDto;
+    try {
+      return this.prisma.file.delete({
+        where: { file_cuid, user_cuid },
+        select: {
+          file_cuid: true,
+          user_cuid: true,
+          file_name: true,
+          extracted_text: true,
+          file_pref: {
+            select: {
+              file_pref_cuid: true,
+              text_color_hex: true,
+              background_color_hex: true,
+              text_spacing: true,
+              font_size: true,
+              letterSwaps: {
+                select: {
+                  letter_swap_cuid: true,
+                  letter1: true,
+                  letter2: true,
+                },
+              },
+            },
+          },
+        },
+      });
+    } catch (error) {
+      if (
+        error instanceof Prisma.PrismaClientKnownRequestError &&
+        error.code === 'P2025'
+      ) {
+        const existingFile = await this.prisma.file.findUnique({
+          where: { file_cuid },
+        });
+
+        if (!existingFile) {
+          throw new NotFoundException('This letter swap does not exist');
+        } else {
+          throw new ForbiddenException('Access Denied');
+        }
+      }
+    }
   }
 }

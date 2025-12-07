@@ -1,9 +1,24 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { FilesService } from './files.service';
 import { AuthGuard } from '@nestjs/passport';
 import { CurrentUser } from 'src/decorators/current-user.decorator';
 import { JwtUser } from 'src/strategies/jwt.strategy';
-import { CreateFile, CreateFileWithPrefs } from '@repo/api/files';
+import {
+  CreateFile,
+  CreateFileWithPrefs,
+  DeleteFile,
+  FileOutWithPrefs,
+  UpdateFileAndPrefs,
+} from '@repo/api/files';
 
 @Controller('files')
 export class FilesController {
@@ -43,5 +58,23 @@ export class FilesController {
     @CurrentUser() user: JwtUser,
   ) {
     return this.filesService.createFileWithPrefs(createFileDto, user.user_cuid);
+  }
+
+  @Patch()
+  @UseGuards(AuthGuard('jwt'))
+  updateWithPrefs(
+    @Body() updateFileDto: UpdateFileAndPrefs,
+    @CurrentUser() user: JwtUser,
+  ): Promise<FileOutWithPrefs> {
+    return this.filesService.updateFileAndPrefs(updateFileDto, user.user_cuid);
+  }
+
+  @Delete()
+  @UseGuards(AuthGuard('jwt'))
+  delete(
+    @Body() deleteFileDto: DeleteFile,
+    @CurrentUser() user: JwtUser,
+  ): Promise<FileOutWithPrefs> {
+    return this.filesService.deleteFile(deleteFileDto, user.user_cuid);
   }
 }

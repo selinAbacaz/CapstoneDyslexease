@@ -5,6 +5,8 @@ export {
   CreateFileWithPrefs,
   FileOut,
   FileOutWithPrefs,
+  UpdateFileAndPrefs,
+  DeleteFile,
 } from './files';
 export {
   CreateFilePrefs,
