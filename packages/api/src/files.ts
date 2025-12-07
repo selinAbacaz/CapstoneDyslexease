@@ -10,7 +10,7 @@ export type CreateFile = z.infer<typeof CreateFile>;
 export const CreateFileWithPrefs = z.object({
   file_name: z.string(),
   extracted_text: z.string().optional(),
-  file_pref: CreateFilePrefs,
+  file_pref: CreateFilePrefs.omit({ file_cuid: true }),
 });
 export type CreateFileWithPrefs = z.infer<typeof CreateFileWithPrefs>;
 

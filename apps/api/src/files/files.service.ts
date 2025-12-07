@@ -56,10 +56,14 @@ export class FilesService {
         extracted_text: true,
         file_pref: {
           select: {
+            file_pref_cuid: true,
             text_color_hex: true,
             background_color_hex: true,
             text_spacing: true,
             font_size: true,
+            letterSwaps: {
+              select: { letter_swap_cuid: true, letter1: true, letter2: true },
+            },
           },
         },
       },
@@ -86,12 +90,22 @@ export class FilesService {
     createFileDto: CreateFileWithPrefs,
     user_cuid: string,
   ): Promise<FileOutWithPrefs> {
-    const { file_pref, ...createFile } = createFileDto;
+    const {
+      file_pref: { letterSwaps, ...pref },
+      ...createFile
+    } = createFileDto;
     return this.prisma.file.create({
       data: {
         user_cuid,
         ...createFile,
-        file_pref: { create: { ...file_pref } },
+        file_pref: {
+          create: {
+            ...pref,
+            letterSwaps: {
+              createMany: { skipDuplicates: true, data: { ...letterSwaps } },
+            },
+          },
+        },
       },
       select: {
         file_cuid: true,
@@ -99,10 +113,14 @@ export class FilesService {
         extracted_text: true,
         file_pref: {
           select: {
+            file_pref_cuid: true,
             text_color_hex: true,
             background_color_hex: true,
             text_spacing: true,
             font_size: true,
+            letterSwaps: {
+              select: { letter_swap_cuid: true, letter1: true, letter2: true },
+            },
           },
         },
       },
