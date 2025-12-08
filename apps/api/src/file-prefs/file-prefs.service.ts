@@ -55,25 +55,29 @@ export class FilePrefsService {
   ): Promise<FilePrefsOut> {
     const { file_pref_cuid, letterSwaps, ...updatedPrefs } = updateFilePrefsDto;
     try {
-      return this.prisma.filePreference.update({
+      const updates = await this.prisma.filePreference.update({
         where: { file_pref_cuid, file: { user_cuid } },
-        data: {
-          ...updatedPrefs,
-          letterSwaps: {
-            updateMany: { where: { file_pref_cuid }, data: letterSwaps },
-          },
-        },
+        data: updatedPrefs,
         select: {
           file_pref_cuid: true,
           text_color_hex: true,
           background_color_hex: true,
           text_spacing: true,
           font_size: true,
-          letterSwaps: {
-            select: { letter_swap_cuid: true, letter1: true, letter2: true },
-          },
         },
       });
+
+      const updatedSwaps = await Promise.all(
+        letterSwaps.map(async ({ letter_swap_cuid, ...updateSwaps }) =>
+          this.prisma.letterSwap.update({
+            where: { letter_swap_cuid, file_pref: { file: { user_cuid } } },
+            data: updateSwaps,
+            select: { letter_swap_cuid: true, letter1: true, letter2: true },
+          }),
+        ),
+      );
+
+      return { ...updates, letterSwaps: updatedSwaps };
     } catch (error) {
       if (
         error instanceof Prisma.PrismaClientKnownRequestError &&
