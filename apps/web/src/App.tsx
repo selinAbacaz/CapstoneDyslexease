@@ -15,6 +15,7 @@ import {
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import './App.css';
+import { AccountForm } from './components/AccountForm';
 
 function App() {
   const {
@@ -88,6 +89,7 @@ function App() {
         </p>
         <DropFile />
       </div>
+      <AccountForm>Signup</AccountForm>
     </div>
   );
 }
