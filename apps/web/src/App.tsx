@@ -16,6 +16,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import './App.css';
 import { AccountForm } from './components/AccountForm';
+import { useGeneralStore } from './utils/zustand/general-store';
 
 function App() {
   const {
@@ -26,6 +27,7 @@ function App() {
     maintextColor,
     swapPairs,
   } = useFileStore();
+  const accountFormType = useGeneralStore((state) => state.accountFormType);
   const processedContent = applyLetterSwapping(content, swapPairs);
 
   return (
@@ -89,7 +91,8 @@ function App() {
         </p>
         <DropFile />
       </div>
-      <AccountForm>Signup</AccountForm>
+      {accountFormType === 'signup' && <AccountForm>Signup</AccountForm>}
+      {accountFormType === 'login' && <AccountForm>Login</AccountForm>}
     </div>
   );
 }

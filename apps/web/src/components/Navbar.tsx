@@ -1,9 +1,11 @@
 import { Button } from 'react-bootstrap';
 import { useAuthStore } from '../utils/zustand/auth-store';
 import { useAuth } from '../utils/auth-helpers';
+import { useGeneralStore } from '../utils/zustand/general-store';
 
 export function Navbar() {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const setAccountForm = useGeneralStore((state) => state.setAccountForm);
   const { logout } = useAuth();
 
   return (
@@ -21,8 +23,8 @@ export function Navbar() {
       <h2>Dyslexease</h2>
       {!isAuthenticated && (
         <div style={{ display: 'flex', gap: '10px' }}>
-          <Button>Login</Button>
-          <Button>Signup</Button>
+          <Button onClick={() => setAccountForm('login')}>Login</Button>
+          <Button onClick={() => setAccountForm('signup')}>Signup</Button>
         </div>
       )}
       {isAuthenticated && <Button onClick={logout}>Logout</Button>}
