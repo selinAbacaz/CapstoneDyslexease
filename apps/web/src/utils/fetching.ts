@@ -42,41 +42,53 @@ async function fetcher(endpoint: string, init: RequestInit) {
   return response;
 }
 
-export function useFetchBackend<T>(endpoint: string) {
+interface FetchBackendOptions {
+  endpoint: string;
+  key?: any;
+  enabled?: boolean;
+}
+
+export function useFetchBackend<T>({
+  endpoint,
+  key,
+  enabled = true,
+}: FetchBackendOptions) {
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState<T | null>(null);
   const [error, setError] = useState<Error | null>(null);
   const pressedLogin = useAuthStore((state) => state.pressedLogin);
 
   useEffect(() => {
-    let ignore = false;
-    setData(null);
-    setError(null);
+    if (enabled) {
+      let ignore = false;
+      setData(null);
+      setError(null);
 
-    const fetchData = async () => {
-      setIsLoading(true);
-      try {
-        const response = await fetcher(endpoint, { method: 'GET' });
-        if (!ignore) {
-          if (!response.ok) {
-            setError(new Error(`${response.status}: ${response.statusText}`));
-          } else {
-            const newData = await response.json();
-            setData(newData);
+      const fetchData = async () => {
+        setIsLoading(true);
+        try {
+          const response = await fetcher(endpoint, { method: 'GET' });
+          if (!ignore) {
+            if (!response.ok) {
+              setError(new Error(`${response.status}: ${response.statusText}`));
+            } else {
+              const newData = await response.json();
+              setData(newData);
+            }
           }
+        } catch {
+          if (!ignore) setError(new Error(`Failed to Fetch!`));
+        } finally {
+          if (!ignore) setIsLoading(false);
         }
-      } catch {
-        if (!ignore) setError(new Error(`Failed to Fetch!`));
-      } finally {
-        if (!ignore) setIsLoading(false);
-      }
-    };
-    fetchData();
+      };
+      fetchData();
 
-    return () => {
-      ignore = true;
-    };
-  }, [pressedLogin]);
+      return () => {
+        ignore = true;
+      };
+    }
+  }, [pressedLogin, key, enabled]);
 
   return { data, error, isLoading };
 }

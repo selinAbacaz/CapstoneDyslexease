@@ -16,6 +16,7 @@ import {
   CreateFile,
   CreateFileWithPrefs,
   DeleteFile,
+  FileOut,
   FileOutWithPrefs,
   UpdateFileAndPrefs,
 } from '@repo/api/files';
@@ -26,13 +27,16 @@ export class FilesController {
 
   @Get()
   @UseGuards(AuthGuard('jwt'))
-  findAll(@CurrentUser() user: JwtUser) {
+  findAll(@CurrentUser() user: JwtUser): Promise<FileOut[]> {
     return this.filesService.findAllFiles(user.user_cuid);
   }
 
   @Get(':id')
   @UseGuards(AuthGuard('jwt'))
-  findOne(@Param('id') file_cuid: string, @CurrentUser() user: JwtUser) {
+  findOne(
+    @Param('id') file_cuid: string,
+    @CurrentUser() user: JwtUser,
+  ): Promise<FileOut> {
     return this.filesService.findFile(file_cuid, user.user_cuid);
   }
 
@@ -41,13 +45,16 @@ export class FilesController {
   findOneWithPrefs(
     @Param('id') file_cuid: string,
     @CurrentUser() user: JwtUser,
-  ) {
+  ): Promise<FileOutWithPrefs> {
     return this.filesService.findFileWthPrefs(file_cuid, user.user_cuid);
   }
 
   @Post()
   @UseGuards(AuthGuard('jwt'))
-  create(@Body() createFileDto: CreateFile, @CurrentUser() user: JwtUser) {
+  create(
+    @Body() createFileDto: CreateFile,
+    @CurrentUser() user: JwtUser,
+  ): Promise<FileOut> {
     return this.filesService.createFile(createFileDto, user.user_cuid);
   }
 
@@ -56,7 +63,7 @@ export class FilesController {
   createWithPrefs(
     @Body() createFileDto: CreateFileWithPrefs,
     @CurrentUser() user: JwtUser,
-  ) {
+  ): Promise<FileOut> {
     return this.filesService.createFileWithPrefs(createFileDto, user.user_cuid);
   }
 

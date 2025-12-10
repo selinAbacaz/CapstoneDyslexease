@@ -26,9 +26,10 @@ model User {
 model FilePreference {
   file_pref_cuid       String       @id @default(cuid())
   file_cuid            String       @unique
-  text_color_hex       String?
-  background_color_hex String?
-  text_spacing         Int?
+  font                 String
+  text_color_hex       String
+  background_color_hex String
+  text_spacing         Int
   font_size            Int?
   created_at           DateTime     @default(now())
   modified_at          DateTime     @updatedAt

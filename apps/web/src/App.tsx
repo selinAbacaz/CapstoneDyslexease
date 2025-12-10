@@ -11,10 +11,17 @@ import {
   Navbar,
   ChangeBgColor,
   LetterSwapControl,
+  SignupForm,
+  LoginForm,
+  CreateFileForm,
 } from './components';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import './App.css';
+import { useGeneralStore } from './utils/zustand/general-store';
+import { useFetchBackend } from './utils/fetching';
+import { FileOut } from '@repo/api/files';
+import { useEffect } from 'react';
 
 function App() {
   const {
@@ -24,8 +31,24 @@ function App() {
     backgroundColor,
     maintextColor,
     swapPairs,
+    setAllFiles,
   } = useFileStore();
+  const formType = useGeneralStore((state) => state.formType);
   const processedContent = applyLetterSwapping(content, swapPairs);
+
+  const { data, isLoading } = useFetchBackend<FileOut[]>({
+    endpoint: '/files',
+  });
+
+  useEffect(() => {
+    if (data) {
+      setAllFiles(data);
+    }
+  }, [data]);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div
@@ -88,6 +111,9 @@ function App() {
         </p>
         <DropFile />
       </div>
+      {formType === 'signup' && <SignupForm />}
+      {formType === 'login' && <LoginForm />}
+      {formType === 'file-create' && <CreateFileForm />}
     </div>
   );
 }

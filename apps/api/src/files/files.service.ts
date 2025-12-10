@@ -60,6 +60,7 @@ export class FilesService {
         file_pref: {
           select: {
             file_pref_cuid: true,
+            font: true,
             text_color_hex: true,
             background_color_hex: true,
             text_spacing: true,
@@ -92,7 +93,7 @@ export class FilesService {
   createFileWithPrefs(
     createFileDto: CreateFileWithPrefs,
     user_cuid: string,
-  ): Promise<FileOutWithPrefs> {
+  ): Promise<FileOut> {
     const {
       file_pref: { letterSwaps, ...pref },
       ...createFile
@@ -114,18 +115,6 @@ export class FilesService {
         file_cuid: true,
         file_name: true,
         extracted_text: true,
-        file_pref: {
-          select: {
-            file_pref_cuid: true,
-            text_color_hex: true,
-            background_color_hex: true,
-            text_spacing: true,
-            font_size: true,
-            letterSwaps: {
-              select: { letter_swap_cuid: true, letter1: true, letter2: true },
-            },
-          },
-        },
       },
     });
   }
@@ -158,6 +147,7 @@ export class FilesService {
           file_pref: {
             select: {
               file_pref_cuid: true,
+              font: true,
               text_color_hex: true,
               background_color_hex: true,
               text_spacing: true,
@@ -215,6 +205,7 @@ export class FilesService {
           file_pref: {
             select: {
               file_pref_cuid: true,
+              font: true,
               text_color_hex: true,
               background_color_hex: true,
               text_spacing: true,
