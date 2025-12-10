@@ -4,6 +4,7 @@ import { useAuth } from '../utils/auth-helpers';
 import { useGeneralStore } from '../utils/zustand/general-store';
 import { FileSelector } from './FileSelector';
 import { Save } from './Save';
+import { Delete } from './Delete';
 
 export function Navbar() {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
@@ -27,6 +28,7 @@ export function Navbar() {
         <Button onClick={() => setFormType('file-create')}>Create File</Button>
         <FileSelector />
         <Save />
+        <Delete />
       </div>
       {!isAuthenticated && (
         <div style={{ display: 'flex', gap: 10 }}>
