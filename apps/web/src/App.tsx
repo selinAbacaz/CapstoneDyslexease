@@ -36,7 +36,9 @@ function App() {
   const formType = useGeneralStore((state) => state.formType);
   const processedContent = applyLetterSwapping(content, swapPairs);
 
-  const { data, isLoading } = useFetchBackend<FileOut[]>('/files');
+  const { data, isLoading } = useFetchBackend<FileOut[]>({
+    endpoint: '/files',
+  });
 
   useEffect(() => {
     if (data) {

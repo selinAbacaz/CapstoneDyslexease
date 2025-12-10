@@ -42,7 +42,17 @@ async function fetcher(endpoint: string, init: RequestInit) {
   return response;
 }
 
-export function useFetchBackend<T>(endpoint: string, enabled = true) {
+interface FetchBackendOptions {
+  endpoint: string;
+  key?: any;
+  enabled?: boolean;
+}
+
+export function useFetchBackend<T>({
+  endpoint,
+  key,
+  enabled = true,
+}: FetchBackendOptions) {
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState<T | null>(null);
   const [error, setError] = useState<Error | null>(null);
@@ -78,7 +88,7 @@ export function useFetchBackend<T>(endpoint: string, enabled = true) {
         ignore = true;
       };
     }
-  }, [pressedLogin, enabled]);
+  }, [pressedLogin, key, enabled]);
 
   return { data, error, isLoading };
 }

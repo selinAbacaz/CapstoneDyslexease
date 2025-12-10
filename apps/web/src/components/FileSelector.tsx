@@ -13,10 +13,11 @@ export function FileSelector() {
   const setFile = useFileStore((state) => state.setFile);
   const [fileId, setFileId] = useState<string>('');
   const allFiles = useFileStore((state) => state.allFiles);
-  const { data: file } = useFetchBackend<FileOutWithPrefs>(
-    `/files/${fileId}/prefs`,
-    !!fileId,
-  );
+  const { data: file } = useFetchBackend<FileOutWithPrefs>({
+    endpoint: `/files/${fileId}/prefs`,
+    enabled: !!fileId,
+    key: fileId,
+  });
 
   useEffect(() => {
     if (file) {
