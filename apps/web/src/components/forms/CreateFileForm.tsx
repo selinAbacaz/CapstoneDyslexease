@@ -43,10 +43,8 @@ export function CreateFileForm() {
       },
       extracted_text: content,
     };
-    const createdFile = await createFile.mutate(newFile);
+    await createFile.mutate(newFile);
     setFormType('none');
-    if (createdFile) {
-    }
   }
 
   function handleClose() {
