@@ -25,6 +25,7 @@ export type FilePrefsOut = z.infer<typeof FilePrefsOut>;
 
 export const UpdateFilePrefs = z.object({
   file_pref_cuid: z.cuid(),
+  font: z.string().optional(),
   text_color_hex: z.string().optional(),
   background_color_hex: z.string().optional(),
   text_spacing: z.int().optional(),
