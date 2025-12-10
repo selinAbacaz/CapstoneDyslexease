@@ -11,11 +11,12 @@ import {
   Navbar,
   ChangeBgColor,
   LetterSwapControl,
+  SignupForm,
+  LoginForm,
 } from './components';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import './App.css';
-import { AccountForm } from './components/AccountForm';
 import { useGeneralStore } from './utils/zustand/general-store';
 import { useFetchBackend } from './utils/fetching';
 import { FileOut } from '@repo/api/files';
@@ -107,8 +108,8 @@ function App() {
         </p>
         <DropFile />
       </div>
-      {formType === 'signup' && <AccountForm>Signup</AccountForm>}
-      {formType === 'login' && <AccountForm>Login</AccountForm>}
+      {formType === 'signup' && <SignupForm />}
+      {formType === 'login' && <LoginForm />}
     </div>
   );
 }

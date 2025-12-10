@@ -10,6 +10,7 @@ export const FONTS = {
 
 export const DEFAULT_FILE_PREFS = {
   content: '',
+  font: FONTS.arial.font,
   letterSpacing: 0,
   backgroundColor: '#FFFFFF',
   maintextColor: 'black',

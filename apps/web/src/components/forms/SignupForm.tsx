@@ -10,31 +10,21 @@ import {
   ModalTitle,
 } from 'react-bootstrap';
 import InputGroupText from 'react-bootstrap/esm/InputGroupText';
-import { useAuth } from '../utils/auth-helpers';
 import { Auth } from '@repo/api/auth';
-import { useGeneralStore } from '../utils/zustand/general-store';
+import { useAuth } from '../../utils/auth-helpers';
+import { useGeneralStore } from '../../utils/zustand/general-store';
 
-interface AccountFormProps {
-  children?: React.ReactNode;
-}
-
-export function AccountForm({ children }: AccountFormProps) {
+export function SignupForm() {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [username, setUsername] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const { formType, setFormType } = useGeneralStore();
-  const { signup, login } = useAuth();
+  const setFormType = useGeneralStore((state) => state.setFormType);
+  const { signup } = useAuth();
 
   async function handleSubmit() {
     const newUser: Auth = { username, email, password };
-    if (formType === 'signup') {
-      await signup(newUser);
-      setFormType('none');
-    } else if (formType === 'login') {
-      await login(newUser);
-      setFormType('none');
-    }
+    signup(newUser);
   }
 
   function handleClose() {
@@ -44,7 +34,7 @@ export function AccountForm({ children }: AccountFormProps) {
   return (
     <Modal show={true} onHide={handleClose}>
       <ModalHeader closeButton>
-        <ModalTitle>{children}</ModalTitle>
+        <ModalTitle>Signup</ModalTitle>
       </ModalHeader>
       <ModalBody>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
@@ -86,7 +76,7 @@ export function AccountForm({ children }: AccountFormProps) {
           onClick={handleSubmit}
           disabled={!username || !password || !email}
         >
-          {children}
+          Signup
         </Button>
       </ModalFooter>
     </Modal>
