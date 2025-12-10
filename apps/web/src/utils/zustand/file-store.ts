@@ -1,17 +1,20 @@
 import { create } from 'zustand';
 import { DEFAULT_FILE_PREFS, FONTS } from '../constants';
 import { SwapPair } from '../types/swap-pair';
+import { FileOut } from '@repo/api/files';
 
 const { content, letterSpacing, backgroundColor, maintextColor, swapPairs } =
   DEFAULT_FILE_PREFS;
 
 type FileStore = {
+  allFiles: FileOut[];
   content: string;
   font: string;
   letterSpacing: number;
   backgroundColor: string;
   maintextColor: string;
   swapPairs: SwapPair[];
+  setAllFiles: (newFiles: FileOut[]) => void;
   setContent: (newContent: string) => void;
   setFont: (newFont: string) => void;
   setLetterSpacing: (newSpacing: number) => void;
@@ -22,6 +25,7 @@ type FileStore = {
 };
 
 export const useFileStore = create<FileStore>((set) => ({
+  allFiles: [],
   content,
   font: FONTS.arial.font,
   letterSpacing,
@@ -51,4 +55,7 @@ export const useFileStore = create<FileStore>((set) => ({
     set((state: FileStore) => ({
       swapPairs: state.swapPairs.filter((_, i) => i !== index),
     })),
+  setAllFiles: (newFiles: FileOut[]) => {
+    set({ allFiles: newFiles });
+  },
 }));
