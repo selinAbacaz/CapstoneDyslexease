@@ -1,15 +1,15 @@
 import { create } from 'zustand';
 
-type AccountForms = 'none' | 'login' | 'signup';
+type FormTypes = 'none' | 'login' | 'signup' | 'file-create';
 
 type GeneralStore = {
-  accountFormType: AccountForms;
-  setAccountForm: (newForm: AccountForms) => void;
+  formType: FormTypes;
+  setFormType: (newForm: FormTypes) => void;
 };
 
 export const useGeneralStore = create<GeneralStore>((set) => ({
-  accountFormType: 'none',
-  setAccountForm: (newForm) => {
-    set({ accountFormType: newForm });
+  formType: 'none',
+  setFormType: (newFormType) => {
+    set({ formType: newFormType });
   },
 }));

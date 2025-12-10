@@ -5,7 +5,7 @@ import { useGeneralStore } from '../utils/zustand/general-store';
 
 export function Navbar() {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
-  const setAccountForm = useGeneralStore((state) => state.setAccountForm);
+  const setAccountForm = useGeneralStore((state) => state.setFormType);
   const { logout } = useAuth();
 
   return (

@@ -24,6 +24,7 @@ export class FilePrefsService {
       where: { file_cuid, file: { user_cuid } },
       select: {
         file_pref_cuid: true,
+        font: true,
         text_color_hex: true,
         background_color_hex: true,
         text_spacing: true,
@@ -60,6 +61,7 @@ export class FilePrefsService {
         data: updatedPrefs,
         select: {
           file_pref_cuid: true,
+          font: true,
           text_color_hex: true,
           background_color_hex: true,
           text_spacing: true,
@@ -106,6 +108,7 @@ export class FilePrefsService {
         where: { file_pref_cuid, file: { user_cuid } },
         select: {
           file_pref_cuid: true,
+          font: true,
           text_color_hex: true,
           background_color_hex: true,
           text_spacing: true,

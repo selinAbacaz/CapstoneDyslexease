@@ -17,6 +17,9 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import './App.css';
 import { AccountForm } from './components/AccountForm';
 import { useGeneralStore } from './utils/zustand/general-store';
+import { useFetchBackend } from './utils/fetching';
+import { FileOut } from '@repo/api/files';
+import { useEffect } from 'react';
 
 function App() {
   const {
@@ -26,9 +29,22 @@ function App() {
     backgroundColor,
     maintextColor,
     swapPairs,
+    setAllFiles,
   } = useFileStore();
-  const accountFormType = useGeneralStore((state) => state.accountFormType);
+  const formType = useGeneralStore((state) => state.formType);
   const processedContent = applyLetterSwapping(content, swapPairs);
+
+  const { data, isLoading } = useFetchBackend<FileOut[]>('/files');
+
+  useEffect(() => {
+    if (data) {
+      setAllFiles(data);
+    }
+  }, [data]);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div
@@ -91,8 +107,8 @@ function App() {
         </p>
         <DropFile />
       </div>
-      {accountFormType === 'signup' && <AccountForm>Signup</AccountForm>}
-      {accountFormType === 'login' && <AccountForm>Login</AccountForm>}
+      {formType === 'signup' && <AccountForm>Signup</AccountForm>}
+      {formType === 'login' && <AccountForm>Login</AccountForm>}
     </div>
   );
 }

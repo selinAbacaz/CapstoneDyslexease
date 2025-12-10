@@ -23,23 +23,22 @@ export function AccountForm({ children }: AccountFormProps) {
   const [username, setUsername] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const { formType, setFormType } = useGeneralStore();
   const { signup, login } = useAuth();
-  const { accountFormType, setAccountForm } = useGeneralStore();
 
   async function handleSubmit() {
     const newUser: Auth = { username, email, password };
-    if (accountFormType === 'signup') {
-      console.log('here');
+    if (formType === 'signup') {
       await signup(newUser);
-      setAccountForm('none');
-    } else if (accountFormType === 'login') {
+      setFormType('none');
+    } else if (formType === 'login') {
       await login(newUser);
-      setAccountForm('none');
+      setFormType('none');
     }
   }
 
   function handleClose() {
-    setAccountForm('none');
+    setFormType('none');
   }
 
   return (
