@@ -13,6 +13,7 @@ import {
   LetterSwapControl,
   SignupForm,
   LoginForm,
+  CreateFileForm,
 } from './components';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
@@ -110,6 +111,7 @@ function App() {
       </div>
       {formType === 'signup' && <SignupForm />}
       {formType === 'login' && <LoginForm />}
+      {formType === 'file-create' && <CreateFileForm />}
     </div>
   );
 }

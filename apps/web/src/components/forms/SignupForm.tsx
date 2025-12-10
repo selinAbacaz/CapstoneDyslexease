@@ -24,7 +24,8 @@ export function SignupForm() {
 
   async function handleSubmit() {
     const newUser: Auth = { username, email, password };
-    signup(newUser);
+    await signup(newUser);
+    setFormType('none');
   }
 
   function handleClose() {

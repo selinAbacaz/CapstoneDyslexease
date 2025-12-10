@@ -15,3 +15,4 @@ export { Navbar } from './Navbar';
 // Forms
 export { SignupForm } from './forms/SignupForm';
 export { LoginForm } from './forms/LoginForm';
+export { CreateFileForm } from './forms/CreateFileForm';

@@ -23,7 +23,8 @@ export function LoginForm() {
 
   async function handleSubmit() {
     const user: Auth = { username, email: '', password };
-    login(user);
+    await login(user);
+    setFormType('none');
   }
 
   function handleClose() {
