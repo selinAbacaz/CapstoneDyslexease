@@ -7,3 +7,11 @@ export const FONTS = {
     font: 'Segoe UI, Tahoma, Geneva, Verdana, sans-serif',
   },
 } as const;
+
+export const DEFAULT_FILE_PREFS = {
+  content: '',
+  letterSpacing: 0,
+  backgroundColor: '#FFFFFF',
+  maintextColor: 'black',
+  swapPairs: [],
+};

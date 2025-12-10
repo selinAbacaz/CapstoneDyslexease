@@ -1,7 +1,9 @@
 import { create } from 'zustand';
-import { FONTS } from '../constants';
+import { DEFAULT_FILE_PREFS, FONTS } from '../constants';
+import { SwapPair } from '../types/swap-pair';
 
-export type SwapPair = [string, string];
+const { content, letterSpacing, backgroundColor, maintextColor, swapPairs } =
+  DEFAULT_FILE_PREFS;
 
 type FileStore = {
   content: string;
@@ -20,14 +22,12 @@ type FileStore = {
 };
 
 export const useFileStore = create<FileStore>((set) => ({
-  content: '',
+  content,
   font: FONTS.arial.font,
-  letterSpacing: 0,
-  backgroundColor: '#FFFFFF',
-  maintextColor: 'black',
-
-  swapPairs: [],
-
+  letterSpacing,
+  backgroundColor,
+  maintextColor,
+  swapPairs,
   setContent: (newContent: string) => {
     set({ content: newContent });
   },
@@ -43,10 +43,12 @@ export const useFileStore = create<FileStore>((set) => ({
   setMainTextColor: (newTextColor: string) => {
     set({ maintextColor: newTextColor });
   },
-  addSwapPair: (pair: SwapPair) => set((state: FileStore) => ({ 
-    swapPairs: [...state.swapPairs, pair] 
-  })),
-  removeSwapPair: (index: number) => set((state: FileStore) => ({ 
-    swapPairs: state.swapPairs.filter((_, i) => i !== index) 
-  })),
+  addSwapPair: (pair: SwapPair) =>
+    set((state: FileStore) => ({
+      swapPairs: [...state.swapPairs, pair],
+    })),
+  removeSwapPair: (index: number) =>
+    set((state: FileStore) => ({
+      swapPairs: state.swapPairs.filter((_, i) => i !== index),
+    })),
 }));

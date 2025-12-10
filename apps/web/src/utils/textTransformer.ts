@@ -1,4 +1,4 @@
-import { SwapPair } from './zustand/file-store';
+import { SwapPair } from './types/swap-pair';
 
 export function applyLetterSwapping(text: string, pairs: SwapPair[]): string {
   if (!text || pairs.length === 0) return text;
