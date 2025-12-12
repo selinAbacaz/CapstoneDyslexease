@@ -1,11 +1,9 @@
 import { Auth, TokenOut } from '@repo/api/auth';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { fetcher } from './fetching';
-import { useAuthStore } from './zustand/auth-store';
 
 export function useAuth() {
   const qc = useQueryClient();
-  const setToken = useAuthStore((state) => state.setToken);
   const signupMutation = useMutation({
     mutationFn: (newUser: Auth): Promise<TokenOut> =>
       fetcher({
@@ -34,7 +32,7 @@ export function useAuth() {
         endpoint: '/auth/logout',
         init: { method: 'POST' },
       }),
-    onSuccess: () => {
+    onSuccess: async () => {
       qc.invalidateQueries();
     },
   });
@@ -48,7 +46,6 @@ export function useAuth() {
   }
 
   function logout() {
-    setToken('');
     logoutMutation.mutate();
   }
 
