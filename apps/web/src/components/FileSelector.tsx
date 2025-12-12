@@ -9,13 +9,16 @@ import { UpdateUser, UserOut } from '@repo/api/user';
 import { useGeneralStore } from '../utils/zustand/general-store';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { fetcher } from '../utils/fetching';
+import { useAuthStore } from '../utils/zustand/auth-store';
 
 export function FileSelector() {
   const qc = useQueryClient();
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const { selectedFileId, setSelectedFileId } = useGeneralStore();
   const { data, isLoading } = useQuery<FileOut[]>({
     queryFn: () => fetcher<FileOut[]>({ endpoint: '/files' }),
     queryKey: ['files'],
+    enabled: isAuthenticated,
   });
   const mutation = useMutation({
     mutationFn: (updateUserDto: UpdateUser): Promise<UserOut> =>
@@ -39,7 +42,7 @@ export function FileSelector() {
 
   if (data) {
     return (
-      <Dropdown>
+      <Dropdown hidden={data.length === 0}>
         <DropdownToggle>Select File</DropdownToggle>
         <DropdownMenu>
           {data.map((file) => (

@@ -14,11 +14,8 @@ export function Delete() {
         endpoint: '/files',
         init: { method: 'DELETE', body: JSON.stringify(deleteFile) },
       }),
-    onSuccess: async () => {
-      await Promise.all([
-        qc.invalidateQueries({ queryKey: ['files'] }),
-        qc.invalidateQueries({ queryKey: ['file', selectedFileId] }),
-      ]);
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['files'] });
     },
   });
 
