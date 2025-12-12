@@ -15,6 +15,7 @@ export function Save() {
   const saveMutation = useMutateBackend<UpdateFileAndPrefs, FileOutWithPrefs>({
     endpoint: '/files',
     method: 'PATCH',
+    invalidateKeys: [['file', selectedFileId]],
   });
 
   function saveFile() {

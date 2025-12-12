@@ -21,6 +21,7 @@ export function CreateFileForm() {
   const createFile = useMutateBackend<CreateFileWithPrefs, FileOut>({
     endpoint: '/files/prefs',
     method: 'POST',
+    invalidateKeys: [['files']],
   });
 
   async function handleSubmit() {

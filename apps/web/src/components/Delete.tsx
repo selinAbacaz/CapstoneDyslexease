@@ -8,6 +8,7 @@ export function Delete() {
   const deleteMutation = useMutateBackend<DeleteFile, FileOut>({
     endpoint: '/files',
     method: 'DELETE',
+    invalidateKeys: [['files']],
   });
 
   return (
