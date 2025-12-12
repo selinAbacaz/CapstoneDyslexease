@@ -73,9 +73,9 @@ export class FilesService {
       },
     });
 
-    const { user_cuid: fetched_user_cuid, ...file_data } = file;
-
     if (!file) throw new NotFoundException('This file does not exist!');
+
+    const { user_cuid: fetched_user_cuid, ...file_data } = file;
     if (fetched_user_cuid !== user_cuid) {
       throw new ForbiddenException('Access Denied!');
     }

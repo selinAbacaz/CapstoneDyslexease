@@ -1,7 +1,8 @@
 import { Button } from 'react-bootstrap';
-import { useMutateBackend } from '../utils/fetching';
 import { FileOutWithPrefs, UpdateFileAndPrefs } from '@repo/api/files';
 import { useFileStore } from '../utils/zustand/file-store';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { fetcher } from '../utils/fetching';
 
 export function Save() {
   const {
@@ -12,10 +13,18 @@ export function Save() {
     backgroundColor,
     maintextColor,
   } = useFileStore();
-  const saveMutation = useMutateBackend<UpdateFileAndPrefs, FileOutWithPrefs>({
-    endpoint: '/files',
-    method: 'PATCH',
-    invalidateKeys: [['file', selectedFileId]],
+  const qc = useQueryClient();
+  const saveMutation = useMutation({
+    mutationFn: (
+      updateFileDto: UpdateFileAndPrefs,
+    ): Promise<FileOutWithPrefs> =>
+      fetcher({
+        endpoint: '/files',
+        init: { method: 'PATCH', body: JSON.stringify(updateFileDto) },
+      }),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['file', selectedFileId] });
+    },
   });
 
   function saveFile() {

@@ -4,21 +4,28 @@ import {
   DropdownMenu,
   DropdownToggle,
 } from 'react-bootstrap';
-import { useFetchBackend, useMutateBackend } from '../utils/fetching';
 import { FileOut } from '@repo/api/files';
 import { UpdateUser, UserOut } from '@repo/api/user';
 import { useGeneralStore } from '../utils/zustand/general-store';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { fetcher } from '../utils/fetching';
 
 export function FileSelector() {
+  const qc = useQueryClient();
   const { selectedFileId, setSelectedFileId } = useGeneralStore();
-  const { data, isLoading } = useFetchBackend<FileOut[]>({
-    endpoint: '/files',
-    key: ['files'],
+  const { data, isLoading } = useQuery<FileOut[]>({
+    queryFn: () => fetcher<FileOut[]>({ endpoint: '/files' }),
+    queryKey: ['files'],
   });
-  const mutation = useMutateBackend<UpdateUser, UserOut>({
-    endpoint: '/users/me',
-    method: 'PATCH',
-    invalidateKeys: [['file', selectedFileId]],
+  const mutation = useMutation({
+    mutationFn: (updateUserDto: UpdateUser): Promise<UserOut> =>
+      fetcher({
+        endpoint: '/users/me',
+        init: { method: 'PATCH', body: JSON.stringify(updateUserDto) },
+      }),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['file', selectedFileId] });
+    },
   });
 
   function handleClick(selected_file_cuid: string) {

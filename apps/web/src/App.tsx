@@ -19,10 +19,11 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import './App.css';
 import { useGeneralStore } from './utils/zustand/general-store';
-import { useFetchBackend } from './utils/fetching';
 import { FileOutWithPrefs } from '@repo/api/files';
 import { UserOut } from '@repo/api/user';
 import { useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { fetcher } from './utils/fetching';
 
 function App() {
   const {
@@ -37,17 +38,23 @@ function App() {
   const { formType, selectedFileId, setSelectedFileId } = useGeneralStore();
   const processedContent = applyLetterSwapping(content, swapPairs);
 
-  const { data: currentUser, isLoading: userLoading } =
-    useFetchBackend<UserOut>({
-      endpoint: '/users/me',
-      key: ['me'],
-    });
+  const { data: currentUser, isLoading: userLoading } = useQuery<UserOut>({
+    queryFn: () => fetcher<UserOut>({ endpoint: '/users/me' }),
+    queryKey: ['user', 'me'],
+  });
   const { data: currentFile, isLoading: fileLoading } =
-    useFetchBackend<FileOutWithPrefs>({
-      endpoint: `/files/${selectedFileId}/prefs`,
-      key: ['file', selectedFileId],
+    useQuery<FileOutWithPrefs>({
+      queryKey: ['file', selectedFileId],
+      queryFn: () =>
+        fetcher<FileOutWithPrefs>({
+          endpoint: `/files/${selectedFileId}/prefs`,
+        }),
       enabled: !!selectedFileId,
     });
+
+  useEffect(() => {
+    setSelectedFileId(currentUser?.selected_file_cuid ?? '');
+  }, [currentUser]);
 
   useEffect(() => {
     if (currentFile) {
@@ -67,12 +74,6 @@ function App() {
       );
     }
   }, [currentFile]);
-
-  useEffect(() => {
-    if (currentUser?.selected_file_cuid) {
-      setSelectedFileId(currentUser.selected_file_cuid);
-    }
-  }, [currentUser]);
 
   if (userLoading || fileLoading) {
     return <div>Loading...</div>;

@@ -1,48 +1,52 @@
 import { Auth, TokenOut } from '@repo/api/auth';
-import { useMutateBackend } from './fetching';
-import { useAuthStore } from './zustand/auth-store';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { fetcher } from './fetching';
 
 export function useAuth() {
-  const signupMutation = useMutateBackend<Auth, TokenOut>({
-    endpoint: '/auth/signup',
-    method: 'POST',
+  const qc = useQueryClient();
+  const signupMutation = useMutation({
+    mutationFn: (newUser: Auth): Promise<TokenOut> =>
+      fetcher({
+        endpoint: '/auth/signup',
+        init: { method: 'POST', body: JSON.stringify(newUser) },
+      }),
+    onSuccess: () => {
+      qc.invalidateQueries();
+    },
   });
-  const loginMutation = useMutateBackend<Auth, TokenOut>({
-    endpoint: '/auth/login',
-    method: 'POST',
-  });
-  const logoutMutation = useMutateBackend({
-    endpoint: '/auth/logout',
-    method: 'POST',
-  });
-  const { pressedLogin, setToken, setIsAuthenticated, setPressedLogin } =
-    useAuthStore();
 
-  async function signup(newUser: Auth) {
-    const token = await signupMutation.mutate(newUser);
-    if (token) {
-      setToken(token.accessToken);
-      setIsAuthenticated(true);
-      setPressedLogin(!pressedLogin);
-    }
+  const loginMutation = useMutation({
+    mutationFn: (user: Auth): Promise<TokenOut> =>
+      fetcher({
+        endpoint: '/auth/login',
+        init: { method: 'POST', body: JSON.stringify(user) },
+      }),
+    onSuccess: () => {
+      qc.invalidateQueries();
+    },
+  });
+
+  const logoutMutation = useMutation({
+    mutationFn: (): Promise<TokenOut> =>
+      fetcher({
+        endpoint: '/auth/logout',
+        init: { method: 'POST' },
+      }),
+    onSuccess: () => {
+      qc.invalidateQueries();
+    },
+  });
+
+  function signup(newUser: Auth) {
+    signupMutation.mutate(newUser);
   }
 
-  async function login(user: Auth) {
-    const token = await loginMutation.mutate(user);
-    if (token) {
-      setToken(token.accessToken);
-      setIsAuthenticated(true);
-      setPressedLogin(!pressedLogin);
-    }
+  function login(user: Auth) {
+    loginMutation.mutate(user);
   }
 
-  async function logout() {
-    const data = await logoutMutation.mutate({});
-    if (data) {
-      setToken('');
-      setIsAuthenticated(false);
-      setPressedLogin(!pressedLogin);
-    }
+  function logout() {
+    logoutMutation.mutate();
   }
 
   return { signup, login, logout };
