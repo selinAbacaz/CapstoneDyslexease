@@ -1,25 +1,28 @@
-import { Button } from 'react-bootstrap';
+import React from "react";
 import { useFileStore } from '../utils/zustand/file-store';
 
-export function AddNewLine() {
-  const content = useFileStore((state) => state.content);
-  const setContent = useFileStore((state) => state.setContent);
+export const AddNewLine = () => {
+  const content = useFileStore((s) => s.content);
+  const setContent = useFileStore((s) => s.setContent);
 
-  function addLine() {
-    // RegEx to split on punctions but retain them in the actual string
-    const newContent = content.split(/(?<=[.?!])/g).join('\n');
-    setContent(newContent);
-  }
+  const addLine = () => {
+    setContent(content.split(/(?<=[.?!])/g).join("\n"));
+  };
 
   return (
-    <Button
-      style={{
-        boxShadow: '2px 2px 10px #99aee7',
-      }}
+    <button
       onClick={addLine}
-      disabled={content === ''}
+      disabled={!content}
+      style={{
+        border: "none",
+        background: "transparent",
+        cursor: "pointer",
+        fontSize: "13px",
+        padding: "4px 8px",
+        borderRadius: "4px",
+      }}
     >
-      Add a new Line
-    </Button>
+      Add Line
+    </button>
   );
-}
+};

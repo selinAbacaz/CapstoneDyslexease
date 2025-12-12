@@ -1,4 +1,4 @@
-import { Button } from 'react-bootstrap';
+import React from "react";
 import { useFileStore } from '../utils/zustand/file-store';
 
 export function MakeLastUpper() {
@@ -24,16 +24,19 @@ export function MakeLastUpper() {
   }
 
   return (
-    <div>
-      <Button
-        onClick={toggleLastUpper}
-        disabled={content === ''}
-        style={{
-          boxShadow: '2px 2px 10px #99aee7',
-        }}
-      >
-        Toggle Last Letters
-      </Button>
-    </div>
+    <button
+      onClick={toggleLastUpper}
+      disabled={!content}
+      style={{
+        border: "none",
+        background: "transparent",
+        cursor: "pointer",
+        fontSize: "13px",
+        padding: "4px 8px",
+        borderRadius: "4px",
+      }}
+    >
+      Last Upper
+    </button>
   );
-}
+};
