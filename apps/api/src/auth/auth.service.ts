@@ -44,6 +44,7 @@ export class AuthService {
 
     response.cookie('refresh', refreshToken, {
       httpOnly: true,
+      sameSite: 'none',
       maxAge: 1000 * 60 * 60 * 24 * 30,
       path: '/auth/refresh',
       secure: process.env.USE_SECURE === 'true',
@@ -112,6 +113,7 @@ export class AuthService {
 
     response.clearCookie('refresh', {
       httpOnly: true,
+      sameSite: 'none',
       maxAge: 1000 * 60 * 60 * 24 * 30,
       path: '/auth/refresh',
       secure: process.env.USE_SECURE === 'true',
