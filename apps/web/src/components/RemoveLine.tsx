@@ -1,4 +1,4 @@
-import { Button } from 'react-bootstrap';
+import React from "react";
 import { useFileStore } from '../utils/zustand/file-store';
 
 export function RemoveLine() {
@@ -18,14 +18,19 @@ export function RemoveLine() {
   }
 
   return (
-    <Button
+    <button
       onClick={removeLine}
-      disabled={content === ''}
+      disabled={!content}
       style={{
-        boxShadow: '2px 2px 10px #99aee7',
+        border: "none",
+        background: "transparent",
+        cursor: "pointer",
+        fontSize: "13px",
+        padding: "4px 8px",
+        borderRadius: "4px",
       }}
     >
-      Remove a Line
-    </Button>
+      Remove Line
+    </button>
   );
-}
+};
