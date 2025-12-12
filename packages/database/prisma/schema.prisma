@@ -18,6 +18,7 @@ model User {
   email              String   @unique
   password_hash      String
   refresh_token_hash String?
+  selected_file_cuid String?
   created_at         DateTime @default(now())
   modified_at        DateTime @updatedAt
   file               File[]
