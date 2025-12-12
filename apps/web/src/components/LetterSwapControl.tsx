@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useFileStore } from '../utils/zustand/file-store';
 import { SwapPair } from '../utils/types/swap-pair';
+import '../App.css'
 
 const LetterSwapControl = () => {
   const { swapPairs, addSwapPair, removeSwapPair } = useFileStore();
@@ -16,8 +17,9 @@ const LetterSwapControl = () => {
   };
 
   return (
-    <div
+    <div className="tooltip-container "
       style={{
+        pointerEvents: 'auto',
         display: 'flex',
         flexDirection: 'column',
         gap: '8px',
@@ -122,6 +124,8 @@ const LetterSwapControl = () => {
           </span>
         ))}
       </div>
+            <div className="tooltip-text" style={{zIndex: '50', position: "absolute", backgroundColor: "#1317f9c9", color: "white", top: '100%', left: 0, marginTop: '8px', minHeight: "40px", transform: "scaleY(-1)"}}> <div style={{transform: "scaleY(-1)"}}> Swap a letter with another </div> </div>
+
     </div>
   );
 };

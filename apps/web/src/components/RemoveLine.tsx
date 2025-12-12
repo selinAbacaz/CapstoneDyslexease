@@ -1,5 +1,6 @@
 import React from "react";
 import { useFileStore } from '../utils/zustand/file-store';
+import '../App.css'
 
 export function RemoveLine() {
   const content = useFileStore((state) => state.content);
@@ -19,9 +20,11 @@ export function RemoveLine() {
 
   return (
     <button
+      className="tooltip-container "
       onClick={removeLine}
       disabled={!content}
       style={{
+        pointerEvents: 'auto',
         border: "none",
         background: "transparent",
         cursor: "pointer",
@@ -31,6 +34,7 @@ export function RemoveLine() {
       }}
     >
       Remove Line
+      <div className="tooltip-text" style={{backgroundColor: "#1317f9c9", color: "white", zIndex:'50', position:"absolute"}}>Remove all new lines</div>
     </button>
   );
 };

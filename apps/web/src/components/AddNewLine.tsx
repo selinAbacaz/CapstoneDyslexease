@@ -22,11 +22,12 @@ export const AddNewLine = () => {
         fontSize: "13px",
         padding: "4px 8px",
         borderRadius: "4px",
-        pointerEvents: 'auto'
+        pointerEvents: 'auto',
+        
       }}
     >
       Add Line
-      <div className="tooltip-text">Add new line after every line</div>
+      <div className="tooltip-text" style={{backgroundColor: "#1317f9c9", color: "white", zIndex:'50', position:"absolute"}}>Add new line after every line</div>
     </button>
   );
 };

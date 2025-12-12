@@ -1,5 +1,6 @@
 import React from "react";
 import { useFileStore } from '../utils/zustand/file-store';
+import '../App.css'
 
 export function MakeLastUpper() {
   const content = useFileStore((state) => state.content);
@@ -25,9 +26,11 @@ export function MakeLastUpper() {
 
   return (
     <button
+    className="tooltip-container "
       onClick={toggleLastUpper}
       disabled={!content}
       style={{
+        pointerEvents: 'auto',
         border: "none",
         background: "transparent",
         cursor: "pointer",
@@ -37,6 +40,7 @@ export function MakeLastUpper() {
       }}
     >
       Last Upper
+      <div className="tooltip-text" style={{backgroundColor: "#1317f9c9", color: "white", zIndex:'50', position:"absolute"}}>Toggle last letter of each word to uppercase/lowercase</div>
     </button>
   );
 };

@@ -1,5 +1,6 @@
 import React from "react";
 import { useFileStore } from '../utils/zustand/file-store';
+import '../App.css'
 
 export const ChangeBgColor = () => {
   const setBackgroundColor = useFileStore((s) => s.setBackgroundColor);
@@ -18,7 +19,7 @@ export const ChangeBgColor = () => {
   };
 
   return (
-  <div style={{ display: "flex", flexDirection: "column" }}>
+  <div className= "tooltip-container" style={{ display: "flex",pointerEvents: 'auto', flexDirection: "column" }}>
     <label style={{ fontSize: 12, marginBottom: 4 }}>Background Color</label>
 
     <input
@@ -34,6 +35,7 @@ export const ChangeBgColor = () => {
         padding: 0,
       }}
     />
+    <div className="tooltip-text " style={{backgroundColor: "#1317f9c9", color: "white", zIndex:'50', position:"absolute"}}> Change background Color </div>
   </div>
 );
 

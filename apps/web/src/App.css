@@ -13,16 +13,17 @@
   text-align: center;
   padding: 5px;
   position: absolute;
-  z-index: 500;
+  z-index: 9999;
   bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
   transition: opacity 0.3s;
   pointer-events: none;
-  
-
+  white-space: nowrap;
 }
 
 .tooltip-text::after {
-  z-index: 50;
+  z-index: 9999;
   content: "";
   position: absolute;
   top: 100%;
@@ -34,14 +35,13 @@
 }
 
 .tooltip-container:hover .tooltip-text {
-  z-index: 50;
+  z-index: 9999;
   visibility: visible;
   opacity: 1;
-  
 }
 
 .tooltip-container {
-  z-index: 50;
+  z-index: auto;
   position: relative;
   display: inline-block;
 }
