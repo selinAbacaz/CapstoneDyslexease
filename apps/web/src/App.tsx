@@ -38,6 +38,7 @@ function App() {
 
   const { data, isLoading } = useFetchBackend<FileOut[]>({
     endpoint: '/files',
+    key: ['files'],
   });
 
   useEffect(() => {

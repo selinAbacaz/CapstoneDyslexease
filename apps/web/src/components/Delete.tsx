@@ -5,10 +5,10 @@ import { DeleteFile, FileOut } from '@repo/api/files';
 
 export function Delete() {
   const selectedFileId = useFileStore((state) => state.selectedFileId);
-  const deleteMutation = useMutateBackend<DeleteFile, FileOut>(
-    '/files',
-    'DELETE',
-  );
+  const deleteMutation = useMutateBackend<DeleteFile, FileOut>({
+    endpoint: '/files',
+    method: 'DELETE',
+  });
 
   return (
     <Button

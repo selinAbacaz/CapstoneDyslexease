@@ -6,6 +6,8 @@ type Method = 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL as string;
 
+let dataCache = new Map<string, { data: unknown; refetch: () => void }>();
+
 async function fetcher(endpoint: string, init: RequestInit) {
   const { token, setToken, setIsAuthenticated } = useAuthStore.getState();
 
@@ -44,7 +46,7 @@ async function fetcher(endpoint: string, init: RequestInit) {
 
 interface FetchBackendOptions {
   endpoint: string;
-  key?: any;
+  key: unknown[];
   enabled?: boolean;
 }
 
@@ -57,6 +59,29 @@ export function useFetchBackend<T>({
   const [data, setData] = useState<T | null>(null);
   const [error, setError] = useState<Error | null>(null);
   const pressedLogin = useAuthStore((state) => state.pressedLogin);
+  const refetch = () => fetchData();
+
+  const fetchData = async (ignore = false) => {
+    setIsLoading(true);
+    try {
+      const response = await fetcher(endpoint, { method: 'GET' });
+      if (!ignore) {
+        if (!response.ok) {
+          setError(new Error(`${response.status}: ${response.statusText}`));
+        } else {
+          const newData = await response.json();
+          setData(newData);
+          const newCache = new Map(dataCache);
+          newCache.set(JSON.stringify(key), { data: newData, refetch });
+          dataCache = newCache;
+        }
+      }
+    } catch {
+      if (!ignore) setError(new Error(`Failed to Fetch!`));
+    } finally {
+      if (!ignore) setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
     if (enabled) {
@@ -64,36 +89,36 @@ export function useFetchBackend<T>({
       setData(null);
       setError(null);
 
-      const fetchData = async () => {
-        setIsLoading(true);
-        try {
-          const response = await fetcher(endpoint, { method: 'GET' });
-          if (!ignore) {
-            if (!response.ok) {
-              setError(new Error(`${response.status}: ${response.statusText}`));
-            } else {
-              const newData = await response.json();
-              setData(newData);
-            }
-          }
-        } catch {
-          if (!ignore) setError(new Error(`Failed to Fetch!`));
-        } finally {
-          if (!ignore) setIsLoading(false);
-        }
-      };
-      fetchData();
+      if (dataCache.has(JSON.stringify(key))) {
+        if (!ignore)
+          setData(dataCache.get(JSON.stringify(key))?.data as T | null);
+      } else {
+        fetchData(ignore);
+      }
 
       return () => {
+        if (dataCache.has(JSON.stringify(key))) {
+          dataCache.delete(JSON.stringify(key));
+        }
         ignore = true;
       };
     }
-  }, [pressedLogin, key, enabled]);
+  }, [pressedLogin, enabled]);
 
-  return { data, error, isLoading };
+  return { data, error, isLoading, refetch };
 }
 
-export function useMutateBackend<T, K>(endpoint: string, method: Method) {
+interface MutateOptions {
+  endpoint: string;
+  method: Method;
+  invalidateKeys?: unknown[][];
+}
+
+export function useMutateBackend<T, K>({
+  endpoint,
+  method,
+  invalidateKeys = [],
+}: MutateOptions) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<Error | null>(null);
   const [success, setSuccess] = useState<boolean>(false);
@@ -114,6 +139,14 @@ export function useMutateBackend<T, K>(endpoint: string, method: Method) {
       } else {
         newData = await response.json();
         setSuccess(true);
+        invalidateKeys.forEach((key) => {
+          if (dataCache.has(JSON.stringify(key))) {
+            const refetch = dataCache.get(JSON.stringify(key))?.refetch;
+            if (refetch) {
+              refetch();
+            }
+          }
+        });
       }
     } catch {
       setError(new Error(`Failed to Mutate!`));

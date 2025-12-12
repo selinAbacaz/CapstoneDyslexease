@@ -16,7 +16,7 @@ export function FileSelector() {
   const { data: file } = useFetchBackend<FileOutWithPrefs>({
     endpoint: `/files/${fileId}/prefs`,
     enabled: !!fileId,
-    key: fileId,
+    key: ['file', fileId],
   });
 
   useEffect(() => {

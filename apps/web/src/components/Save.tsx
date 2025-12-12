@@ -12,10 +12,10 @@ export function Save() {
     backgroundColor,
     maintextColor,
   } = useFileStore();
-  const saveMutation = useMutateBackend<UpdateFileAndPrefs, FileOutWithPrefs>(
-    '/files',
-    'PATCH',
-  );
+  const saveMutation = useMutateBackend<UpdateFileAndPrefs, FileOutWithPrefs>({
+    endpoint: '/files',
+    method: 'PATCH',
+  });
 
   function saveFile() {
     saveMutation.mutate({

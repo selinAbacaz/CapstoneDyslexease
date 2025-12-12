@@ -3,12 +3,18 @@ import { useMutateBackend } from './fetching';
 import { useAuthStore } from './zustand/auth-store';
 
 export function useAuth() {
-  const signupMutation = useMutateBackend<Auth, TokenOut>(
-    '/auth/signup',
-    'POST',
-  );
-  const loginMutation = useMutateBackend<Auth, TokenOut>('/auth/login', 'POST');
-  const logoutMutation = useMutateBackend('/auth/logout', 'POST');
+  const signupMutation = useMutateBackend<Auth, TokenOut>({
+    endpoint: '/auth/signup',
+    method: 'POST',
+  });
+  const loginMutation = useMutateBackend<Auth, TokenOut>({
+    endpoint: '/auth/login',
+    method: 'POST',
+  });
+  const logoutMutation = useMutateBackend({
+    endpoint: '/auth/logout',
+    method: 'POST',
+  });
   const { pressedLogin, setToken, setIsAuthenticated, setPressedLogin } =
     useAuthStore();
 

@@ -18,10 +18,10 @@ import { useMutateBackend } from '../../utils/fetching';
 export function CreateFileForm() {
   const [fileName, setFileName] = useState<string>('');
   const setFormType = useGeneralStore((state) => state.setFormType);
-  const createFile = useMutateBackend<CreateFileWithPrefs, FileOut>(
-    '/files/prefs',
-    'POST',
-  );
+  const createFile = useMutateBackend<CreateFileWithPrefs, FileOut>({
+    endpoint: '/files/prefs',
+    method: 'POST',
+  });
 
   async function handleSubmit() {
     const {
