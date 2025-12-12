@@ -27,12 +27,13 @@ export const ChangeBgColor = () => {
       defaultValue="#FFFFFF"
       onChange={changeColor}
       style={{
-        border: "none",
+        border: "1px solid #ccc",
         background: "transparent",
         cursor: "pointer",
         width: "30px",
         height: "24px",
         padding: 0,
+        borderColor: "white",
       }}
     />
     <div className="tooltip-text " style={{backgroundColor: "#1317f9c9", color: "white", zIndex:'50', position:"absolute"}}> Change background Color </div>

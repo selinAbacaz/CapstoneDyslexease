@@ -28,7 +28,8 @@ const LetterSwapControl = () => {
         borderRadius: '10px',
         background: '#fafafa',
         boxShadow: '0 1px 4px rgba(0,0,0,0.06)',
-        width: '160px'
+        width: '160px',
+        color: "black"
       }}
     >
       <label style={{ fontSize: '13px', fontWeight: '600', marginBottom: '2px' }}>

@@ -148,7 +148,7 @@ function App() {
             minWidth: 0,
           }}
         >
-          <h6 style={{ marginBottom: '12px', fontSize:'20px', fontWeight: 'bold', justifyContent: 'left', display: 'flex', paddingLeft: '2px' }}>
+          <h6 style={{ marginBottom: '12px', color: "black", fontSize:'20px', fontWeight: 'bold', justifyContent: 'left', display: 'flex', paddingLeft: '2px' }}>
             Your Documents
           </h6>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
@@ -216,7 +216,7 @@ function App() {
               style={{
                 display: 'flex',
                 gap: '10px',
-                background: 'white',
+                background: backgroundColor,
                 padding: '8px 12px',
                 borderRadius: '8px',
                 border: '1px solid #ddd',
@@ -233,14 +233,15 @@ function App() {
               style={{
                 display: 'flex',
                 gap: '10px',
-                background: 'white',
+                background: backgroundColor,
                 padding: '8px 12px',
                 borderRadius: '8px',
                 border: '1px solid #ddd',
                 boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
+                color: maintextColor,
               }}
             >
-              <MakeFirstUpper />
+              <MakeFirstUpper/>
               <MakeLastUpper />
               <AddNewLine />
               <RemoveLine />
@@ -251,7 +252,7 @@ function App() {
               style={{
                 display: 'flex',
                 gap: '10px',
-                background: 'white',
+                background: backgroundColor,
                 padding: '8px 12px',
                 borderRadius: '8px',
                 border: '1px solid #ddd',
@@ -287,6 +288,7 @@ function App() {
                   backgroundColor: 'white',
                   boxShadow: '0 3px 10px rgba(0,0,0,0.08)',
                   letterSpacing: `${letterSpacing}px`,
+                  color: 'black'
                 }}
               >
                 {processedContent}
@@ -308,7 +310,7 @@ function App() {
             minWidth: 0,
           }}
         >
-          <h6 style={{ marginBottom: '12px', fontSize:"20px", fontWeight: 'bold' }}>
+          <h6 style={{ marginBottom: '12px', color: "black", fontSize:"20px", fontWeight: 'bold' }}>
             Document Info
           </h6>
 

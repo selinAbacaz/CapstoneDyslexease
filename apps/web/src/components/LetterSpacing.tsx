@@ -16,7 +16,7 @@ export const LetterSpacing = () => {
       onChange={(e) => setLetterSpacing(Number(e.target.value))}
       style={{
         width: "50px",
-        background: "transparent",
+        background: "white",
         fontSize: "14px",
         border: "1px solid #ccc",
       }}

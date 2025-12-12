@@ -5,6 +5,7 @@ import '../App.css'
 export const AddNewLine = () => {
   const content = useFileStore((s) => s.content);
   const setContent = useFileStore((s) => s.setContent);
+    const maintextColor = useFileStore((state) => state.maintextColor);
 
   const addLine = () => {
     setContent(content.split(/(?<=[.?!])/g).join("\n"));
@@ -23,6 +24,7 @@ export const AddNewLine = () => {
         padding: "4px 8px",
         borderRadius: "4px",
         pointerEvents: 'auto',
+        color: maintextColor,
         
       }}
     >

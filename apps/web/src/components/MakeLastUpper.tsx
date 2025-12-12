@@ -5,6 +5,7 @@ import '../App.css'
 export function MakeLastUpper() {
   const content = useFileStore((state) => state.content);
   const setContent = useFileStore((state) => state.setContent);
+  const maintextColor = useFileStore((state) => state.maintextColor);
 
   function toggleLastUpper() {
     // This RegEx matches every last letter in a string if it is lowercase
@@ -37,6 +38,7 @@ export function MakeLastUpper() {
         fontSize: "13px",
         padding: "4px 8px",
         borderRadius: "4px",
+        color: maintextColor,
       }}
     >
       Last Upper
