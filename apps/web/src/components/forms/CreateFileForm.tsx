@@ -13,15 +13,23 @@ import { DEFAULT_FILE_PREFS } from '../../utils/constants';
 import { CreateFileWithPrefs, FileOut } from '@repo/api/files';
 import { useGeneralStore } from '../../utils/zustand/general-store';
 import { useState } from 'react';
-import { useMutateBackend } from '../../utils/fetching';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { fetcher } from '../../utils/fetching';
 
 export function CreateFileForm() {
+  const qc = useQueryClient();
   const [fileName, setFileName] = useState<string>('');
   const setFormType = useGeneralStore((state) => state.setFormType);
-  const createFile = useMutateBackend<CreateFileWithPrefs, FileOut>(
-    '/files/prefs',
-    'POST',
-  );
+  const createFile = useMutation({
+    mutationFn: (newFile: CreateFileWithPrefs): Promise<FileOut> =>
+      fetcher({
+        endpoint: '/files/prefs',
+        init: { method: 'POST', body: JSON.stringify(newFile) },
+      }),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['files'] });
+    },
+  });
 
   async function handleSubmit() {
     const {
@@ -43,7 +51,7 @@ export function CreateFileForm() {
       },
       extracted_text: content,
     };
-    await createFile.mutate(newFile);
+    createFile.mutate(newFile);
     setFormType('none');
   }
 

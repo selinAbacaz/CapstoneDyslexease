@@ -33,9 +33,10 @@ type FileStore = {
     newTextColor: string,
     newPairs: SwapPair[],
   ) => void;
+  reset: () => void;
 };
 
-export const useFileStore = create<FileStore>((set) => ({
+export const useFileStore = create<FileStore>((set, get, store) => ({
   allFiles: [],
   selectedFileId: '',
   content,
@@ -89,5 +90,8 @@ export const useFileStore = create<FileStore>((set) => ({
     set({ backgroundColor: newColor });
     set({ maintextColor: newTextColor });
     set({ swapPairs: newPairs });
+  },
+  reset: () => {
+    set(store.getInitialState, true);
   },
 }));

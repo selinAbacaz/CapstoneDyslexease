@@ -19,9 +19,11 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import './App.css';
 import { useGeneralStore } from './utils/zustand/general-store';
-import { useFetchBackend } from './utils/fetching';
-import { FileOut } from '@repo/api/files';
+import { FileOutWithPrefs } from '@repo/api/files';
+import { UserOut } from '@repo/api/user';
 import { useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { fetcher } from './utils/fetching';
 
 function App() {
   const {
@@ -31,22 +33,49 @@ function App() {
     backgroundColor,
     maintextColor,
     swapPairs,
-    setAllFiles,
+    setFile,
   } = useFileStore();
-  const formType = useGeneralStore((state) => state.formType);
+  const { formType, selectedFileId, setSelectedFileId } = useGeneralStore();
   const processedContent = applyLetterSwapping(content, swapPairs);
 
-  const { data, isLoading } = useFetchBackend<FileOut[]>({
-    endpoint: '/files',
+  const { data: currentUser, isLoading: userLoading } = useQuery<UserOut>({
+    queryFn: () => fetcher<UserOut>({ endpoint: '/users/me' }),
+    queryKey: ['user', 'me'],
   });
+  const { data: currentFile, isLoading: fileLoading } =
+    useQuery<FileOutWithPrefs>({
+      queryKey: ['file', selectedFileId],
+      queryFn: () =>
+        fetcher<FileOutWithPrefs>({
+          endpoint: `/files/${selectedFileId}/prefs`,
+        }),
+      enabled: !!selectedFileId,
+    });
 
   useEffect(() => {
-    if (data) {
-      setAllFiles(data);
-    }
-  }, [data]);
+    setSelectedFileId(currentUser?.selected_file_cuid ?? '');
+  }, [currentUser]);
 
-  if (isLoading) {
+  useEffect(() => {
+    if (currentFile) {
+      const {
+        file_cuid,
+        extracted_text,
+        file_pref: { font, text_spacing, text_color_hex, background_color_hex },
+      } = currentFile;
+      setFile(
+        file_cuid,
+        extracted_text,
+        font,
+        text_spacing,
+        background_color_hex,
+        text_color_hex,
+        [],
+      );
+    }
+  }, [currentFile]);
+
+  if (userLoading || fileLoading) {
     return <div>Loading...</div>;
   }
 

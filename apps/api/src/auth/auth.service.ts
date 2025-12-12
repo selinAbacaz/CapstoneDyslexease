@@ -45,7 +45,6 @@ export class AuthService {
     response.cookie('refresh', refreshToken, {
       httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24 * 30,
-      sameSite: 'strict',
       path: '/auth/refresh',
       secure: process.env.USE_SECURE === 'true',
     });
@@ -68,6 +67,7 @@ export class AuthService {
           user_cuid: true,
           username: true,
           email: true,
+          selected_file_cuid: true,
         },
       });
     } catch (error) {
@@ -113,7 +113,6 @@ export class AuthService {
     response.clearCookie('refresh', {
       httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24 * 30,
-      sameSite: 'strict',
       path: '/auth/refresh',
       secure: process.env.USE_SECURE === 'true',
     });
