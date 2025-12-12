@@ -1,5 +1,6 @@
 import React from "react";
 import { useFileStore } from '../utils/zustand/file-store';
+import '../App.css'
 
 export const AddNewLine = () => {
   const content = useFileStore((s) => s.content);
@@ -11,6 +12,7 @@ export const AddNewLine = () => {
 
   return (
     <button
+    className="tooltip-container "
       onClick={addLine}
       disabled={!content}
       style={{
@@ -20,9 +22,11 @@ export const AddNewLine = () => {
         fontSize: "13px",
         padding: "4px 8px",
         borderRadius: "4px",
+        pointerEvents: 'auto'
       }}
     >
       Add Line
+      <div className="tooltip-text">Add new line after every line</div>
     </button>
   );
 };

@@ -4,3 +4,44 @@
 
   font-color: #4a6cc7;
 }
+
+.tooltip-text {
+  background-color: rgb(136, 136, 244);
+  border-radius: 10px;
+  font-size: 14px;
+  visibility: hidden;
+  text-align: center;
+  padding: 5px;
+  position: absolute;
+  z-index: 500;
+  bottom: 125%;
+  transition: opacity 0.3s;
+  pointer-events: none;
+  
+
+}
+
+.tooltip-text::after {
+  z-index: 50;
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: blue transparent transparent transparent;
+}
+
+.tooltip-container:hover .tooltip-text {
+  z-index: 50;
+  visibility: visible;
+  opacity: 1;
+  
+}
+
+.tooltip-container {
+  z-index: 50;
+  position: relative;
+  display: inline-block;
+}

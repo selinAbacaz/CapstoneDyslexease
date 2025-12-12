@@ -148,6 +148,9 @@ function App() {
             minWidth: 0,
           }}
         >
+          <h6 style={{ marginBottom: '12px', fontSize:'20px', fontWeight: 'bold', justifyContent: 'left', display: 'flex', paddingLeft: '2px' }}>
+            Your Documents
+          </h6>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
             {files?.map((file) => (
               <div
@@ -274,7 +277,7 @@ function App() {
               <p
                 id="changeText11"
                 style={{
-                  maxWidth: '760px',
+                  maxWidth: '60vw',
                   width: '100%',
                   whiteSpace: 'pre-line',
                   fontSize: `${fontSize}px`,
@@ -305,7 +308,7 @@ function App() {
             minWidth: 0,
           }}
         >
-          <h6 style={{ marginBottom: '12px', fontWeight: 'bold' }}>
+          <h6 style={{ marginBottom: '12px', fontSize:"20px", fontWeight: 'bold' }}>
             Document Info
           </h6>
 
