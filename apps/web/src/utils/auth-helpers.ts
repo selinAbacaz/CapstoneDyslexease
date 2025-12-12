@@ -32,7 +32,7 @@ export function useAuth() {
         endpoint: '/auth/logout',
         init: { method: 'POST' },
       }),
-    onSuccess: () => {
+    onSuccess: async () => {
       qc.invalidateQueries();
     },
   });

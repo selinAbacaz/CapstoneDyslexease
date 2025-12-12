@@ -14,28 +14,33 @@ import {
   SignupForm,
   LoginForm,
   CreateFileForm,
+  ChangeFontSize,
 } from './components';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import './App.css';
 import { useGeneralStore } from './utils/zustand/general-store';
-import { FileOutWithPrefs } from '@repo/api/files';
-import { UserOut } from '@repo/api/user';
+import { FileOut, FileOutWithPrefs } from '@repo/api/files';
+import { UpdateUser, UserOut } from '@repo/api/user';
 import { useEffect } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { fetcher } from './utils/fetching';
+import { useAuthStore } from './utils/zustand/auth-store';
 
 function App() {
+  const qc = useQueryClient();
   const {
     content,
     font,
     letterSpacing,
     backgroundColor,
     maintextColor,
+    fontSize,
     swapPairs,
     setFile,
   } = useFileStore();
   const { formType, selectedFileId, setSelectedFileId } = useGeneralStore();
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const processedContent = applyLetterSwapping(content, swapPairs);
 
   const { data: currentUser, isLoading: userLoading } = useQuery<UserOut>({
@@ -51,6 +56,26 @@ function App() {
         }),
       enabled: !!selectedFileId,
     });
+  const { data: files, isLoading: filesLoading } = useQuery<FileOut[]>({
+    queryFn: () => fetcher<FileOut[]>({ endpoint: '/files' }),
+    queryKey: ['files'],
+    enabled: isAuthenticated,
+  });
+  const mutation = useMutation({
+    mutationFn: (updateUserDto: UpdateUser): Promise<UserOut> =>
+      fetcher({
+        endpoint: '/users/me',
+        init: { method: 'PATCH', body: JSON.stringify(updateUserDto) },
+      }),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['file', selectedFileId] });
+    },
+  });
+
+  function handleSelectFile(selected_file_cuid: string) {
+    setSelectedFileId(selected_file_cuid);
+    mutation.mutate({ selected_file_cuid });
+  }
 
   useEffect(() => {
     setSelectedFileId(currentUser?.selected_file_cuid ?? '');
@@ -61,7 +86,13 @@ function App() {
       const {
         file_cuid,
         extracted_text,
-        file_pref: { font, text_spacing, text_color_hex, background_color_hex },
+        file_pref: {
+          font,
+          text_spacing,
+          text_color_hex,
+          background_color_hex,
+          font_size,
+        },
       } = currentFile;
       setFile(
         file_cuid,
@@ -70,12 +101,13 @@ function App() {
         text_spacing,
         background_color_hex,
         text_color_hex,
+        font_size,
         [],
       );
     }
   }, [currentFile]);
 
-  if (userLoading || fileLoading) {
+  if (userLoading || fileLoading || filesLoading) {
     return <div>Loading...</div>;
   }
 
@@ -116,14 +148,11 @@ function App() {
             minWidth: 0,
           }}
         >
-
           <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            {data?.map((file) => (
+            {files?.map((file) => (
               <div
                 key={file.file_cuid}
-                onClick={() =>
-                  useFileStore.setState({ content: file.file_name || '' })
-                }
+                onClick={() => handleSelectFile(file.file_cuid)}
                 style={{
                   padding: '10px',
                   border: '1px solid #dcdcdc',
@@ -227,6 +256,7 @@ function App() {
               }}
             >
               <LetterSwapControl />
+              <ChangeFontSize />
             </div>
           </div>
 
@@ -247,7 +277,7 @@ function App() {
                   maxWidth: '760px',
                   width: '100%',
                   whiteSpace: 'pre-line',
-                  fontSize: '20px',
+                  fontSize: `${fontSize}px`,
                   padding: '35px',
                   border: '1px solid #ddd',
                   borderRadius: '8px',

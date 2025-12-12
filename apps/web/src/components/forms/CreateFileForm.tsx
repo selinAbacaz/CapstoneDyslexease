@@ -38,6 +38,7 @@ export function CreateFileForm() {
       letterSpacing,
       backgroundColor,
       maintextColor,
+      fontSize,
       swapPairs,
     } = DEFAULT_FILE_PREFS;
     const newFile: CreateFileWithPrefs = {
@@ -48,6 +49,7 @@ export function CreateFileForm() {
         background_color_hex: backgroundColor,
         text_spacing: letterSpacing,
         letterSwaps: swapPairs,
+        font_size: fontSize,
       },
       extracted_text: content,
     };
