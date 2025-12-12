@@ -7,6 +7,7 @@ export { MakeLastUpper } from './MakeLastUpper';
 export { LetterSpacing } from './LetterSpacing';
 export { FontDropdown } from './FontDropdown';
 export { ChangeBgColor } from './ChangeBgColor';
+export { ChangeFontSize } from './ChangeFontSize';
 export { default as LetterSwapControl } from './LetterSwapControl';
 
 // Navigation
