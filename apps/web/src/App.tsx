@@ -54,7 +54,7 @@ function App() {
         fetcher<FileOutWithPrefs>({
           endpoint: `/files/${selectedFileId}/prefs`,
         }),
-      enabled: !!selectedFileId,
+      enabled: !!selectedFileId && isAuthenticated,
     });
   const { data: files, isLoading: filesLoading } = useQuery<FileOut[]>({
     queryFn: () => fetcher<FileOut[]>({ endpoint: '/files' }),
