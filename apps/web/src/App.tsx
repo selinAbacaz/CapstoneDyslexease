@@ -59,8 +59,8 @@ function App() {
         backgroundColor: backgroundColor,
         color: maintextColor,
         minHeight: '100vh',
-        width: '100vw',      // FIXED
-        overflowX: 'hidden', // FIXED SCROLLBAR
+        width: '100vw',
+        overflowX: 'hidden',
         display: 'flex',
         flexDirection: 'column',
       }}
@@ -78,9 +78,9 @@ function App() {
         {/* LEFT SIDEBAR */}
         <div
           style={{
-            width: '220px', // SQUISHED
+            width: '220px',
             borderRight: '2px solid #ddd',
-            padding: '15px', // SQUISHED
+            padding: '15px',
             overflowY: 'auto',
             backgroundColor: '#f8f9fa',
             flexShrink: 0,
@@ -117,7 +117,7 @@ function App() {
             style={{
               display: 'flex',
               gap: '8px',
-              padding: '10px', // SQUISHED
+              padding: '10px',
               borderBottom: '2px solid #ddd',
               backgroundColor: '#f0f0f0',
               flexWrap: 'wrap',
