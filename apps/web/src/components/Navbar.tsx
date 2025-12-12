@@ -36,12 +36,12 @@ export function Navbar() {
         <Delete />
       </div>
       {!isAuthenticated && (
-        <div style={{ display: 'flex', gap: 10 }}>
+        <div style={{ display: 'flex', gap: 10, marginRight:"2vw" }}>
           <Button onClick={() => setFormType('login')}>Login</Button>
           <Button onClick={() => setFormType('signup')}>Signup</Button>
         </div>
       )}
-      {isAuthenticated && <Button onClick={logout}>Logout</Button>}
+      {isAuthenticated && <Button onClick={logout} style={{marginRight:"2vw"}}>Logout</Button>}
     </div>
   );
 }
