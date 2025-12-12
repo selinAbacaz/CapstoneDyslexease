@@ -1,18 +1,20 @@
 import { Auth, TokenOut } from '@repo/api/auth';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { fetcher } from './fetching';
+import { useAuthStore } from './zustand/auth-store';
+import { useFileStore } from './zustand/file-store';
 
 export function useAuth() {
   const qc = useQueryClient();
+  const setToken = useAuthStore((state) => state.setToken);
+  const setIsAuthenticated = useAuthStore((state) => state.setIsAuthenticated);
+  const reset = useFileStore((state) => state.reset);
   const signupMutation = useMutation({
     mutationFn: (newUser: Auth): Promise<TokenOut> =>
       fetcher({
         endpoint: '/auth/signup',
         init: { method: 'POST', body: JSON.stringify(newUser) },
       }),
-    onSuccess: () => {
-      qc.invalidateQueries();
-    },
   });
 
   const loginMutation = useMutation({
@@ -21,9 +23,6 @@ export function useAuth() {
         endpoint: '/auth/login',
         init: { method: 'POST', body: JSON.stringify(user) },
       }),
-    onSuccess: () => {
-      qc.invalidateQueries();
-    },
   });
 
   const logoutMutation = useMutation({
@@ -32,21 +31,28 @@ export function useAuth() {
         endpoint: '/auth/logout',
         init: { method: 'POST' },
       }),
-    onSuccess: async () => {
-      qc.invalidateQueries();
-    },
   });
 
-  function signup(newUser: Auth) {
-    signupMutation.mutate(newUser);
+  async function signup(newUser: Auth) {
+    const data = await signupMutation.mutateAsync(newUser);
+    setToken(data.accessToken);
+    setIsAuthenticated(true);
+    await qc.invalidateQueries();
   }
 
-  function login(user: Auth) {
-    loginMutation.mutate(user);
+  async function login(user: Auth) {
+    const data = await loginMutation.mutateAsync(user);
+    setToken(data.accessToken);
+    setIsAuthenticated(true);
+    await qc.invalidateQueries();
   }
 
-  function logout() {
-    logoutMutation.mutate();
+  async function logout() {
+    await logoutMutation.mutateAsync();
+    setToken('');
+    setIsAuthenticated(false);
+    reset();
+    qc.removeQueries();
   }
 
   return { signup, login, logout };
