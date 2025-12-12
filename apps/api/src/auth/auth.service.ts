@@ -68,6 +68,7 @@ export class AuthService {
           user_cuid: true,
           username: true,
           email: true,
+          selected_file_cuid: true,
         },
       });
     } catch (error) {

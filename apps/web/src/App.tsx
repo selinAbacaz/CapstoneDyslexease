@@ -34,18 +34,19 @@ function App() {
     swapPairs,
     setFile,
   } = useFileStore();
-  const formType = useGeneralStore((state) => state.formType);
+  const { formType, selectedFileId, setSelectedFileId } = useGeneralStore();
   const processedContent = applyLetterSwapping(content, swapPairs);
+
   const { data: currentUser, isLoading: userLoading } =
     useFetchBackend<UserOut>({
-      endpoint: '/me',
+      endpoint: '/users/me',
       key: ['me'],
     });
   const { data: currentFile, isLoading: fileLoading } =
     useFetchBackend<FileOutWithPrefs>({
-      endpoint: `/files/${currentUser?.selected_file_cuid}/prefs`,
-      key: ['file', currentUser?.selected_file_cuid],
-      enabled: !!currentUser,
+      endpoint: `/files/${selectedFileId}/prefs`,
+      key: ['file', selectedFileId],
+      enabled: !!selectedFileId,
     });
 
   useEffect(() => {
@@ -66,6 +67,12 @@ function App() {
       );
     }
   }, [currentFile]);
+
+  useEffect(() => {
+    if (currentUser?.selected_file_cuid) {
+      setSelectedFileId(currentUser.selected_file_cuid);
+    }
+  }, [currentUser]);
 
   if (userLoading || fileLoading) {
     return <div>Loading...</div>;
