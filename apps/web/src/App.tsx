@@ -20,7 +20,8 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import './App.css';
 import { useGeneralStore } from './utils/zustand/general-store';
 import { useFetchBackend } from './utils/fetching';
-import { FileOut } from '@repo/api/files';
+import { FileOutWithPrefs } from '@repo/api/files';
+import { UserOut } from '@repo/api/user';
 import { useEffect } from 'react';
 
 function App() {
@@ -31,23 +32,42 @@ function App() {
     backgroundColor,
     maintextColor,
     swapPairs,
-    setAllFiles,
+    setFile,
   } = useFileStore();
   const formType = useGeneralStore((state) => state.formType);
   const processedContent = applyLetterSwapping(content, swapPairs);
-
-  const { data, isLoading } = useFetchBackend<FileOut[]>({
-    endpoint: '/files',
-    key: ['files'],
-  });
+  const { data: currentUser, isLoading: userLoading } =
+    useFetchBackend<UserOut>({
+      endpoint: '/me',
+      key: ['me'],
+    });
+  const { data: currentFile, isLoading: fileLoading } =
+    useFetchBackend<FileOutWithPrefs>({
+      endpoint: `/files/${currentUser?.selected_file_cuid}/prefs`,
+      key: ['file', currentUser?.selected_file_cuid],
+      enabled: !!currentUser,
+    });
 
   useEffect(() => {
-    if (data) {
-      setAllFiles(data);
+    if (currentFile) {
+      const {
+        file_cuid,
+        extracted_text,
+        file_pref: { font, text_spacing, text_color_hex, background_color_hex },
+      } = currentFile;
+      setFile(
+        file_cuid,
+        extracted_text,
+        font,
+        text_spacing,
+        background_color_hex,
+        text_color_hex,
+        [],
+      );
     }
-  }, [data]);
+  }, [currentFile]);
 
-  if (isLoading) {
+  if (userLoading || fileLoading) {
     return <div>Loading...</div>;
   }
 
