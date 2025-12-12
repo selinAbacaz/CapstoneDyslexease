@@ -28,6 +28,36 @@ import { fetcher } from './utils/fetching';
 import { useAuthStore } from './utils/zustand/auth-store';
 
 function App() {
+
+function hexToRgb(hex: string) {
+  const parsed = hex.replace('#', '');
+  const bigint = parseInt(parsed, 16);
+  return {
+    r: (bigint >> 16) & 255,
+    g: (bigint >> 8) & 255,
+    b: bigint & 255,
+  };
+}
+
+// Return true if color is light
+function isLightColor(hex: string) {
+  const { r, g, b } = hexToRgb(hex);
+  // Perceived luminance formula
+  const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+  return luminance > 0.5;
+}
+
+// Lighten or darken color by a factor
+function adjustColor(hex: string, amount: number) {
+  const { r, g, b } = hexToRgb(hex);
+
+  const newR = Math.min(255, Math.max(0, r + amount));
+  const newG = Math.min(255, Math.max(0, g + amount));
+  const newB = Math.min(255, Math.max(0, b + amount));
+
+  return `rgb(${newR}, ${newG}, ${newB})`;
+}
+
   const qc = useQueryClient();
   const {
     content,
@@ -148,6 +178,19 @@ function App() {
             minWidth: 0,
           }}
         >
+          <h6
+            style={{
+              marginBottom: '12px',
+              color: 'black',
+              fontSize: '20px',
+              fontWeight: 'bold',
+              justifyContent: 'left',
+              display: 'flex',
+              paddingLeft: '2px',
+            }}
+          >
+            Your Documents
+          </h6>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
             {files?.map((file) => (
               <div
@@ -157,15 +200,22 @@ function App() {
                   padding: '10px',
                   border: '1px solid #dcdcdc',
                   borderRadius: '8px',
-                  backgroundColor: 'white',
+                  backgroundColor: backgroundColor,
                   cursor: 'pointer',
                   transition: '0.15s',
                 }}
-                onMouseEnter={(e) =>
-                  (e.currentTarget.style.backgroundColor = '#f1f1f1')
-                }
+                onMouseEnter={(e) => {
+                  const lighter = adjustColor(backgroundColor, +40); // lighten
+                  const darker = adjustColor(backgroundColor, -40); // darken
+
+                  e.currentTarget.style.backgroundColor = isLightColor(
+                    backgroundColor,
+                  )
+                    ? darker
+                    : lighter;
+                }}
                 onMouseLeave={(e) =>
-                  (e.currentTarget.style.backgroundColor = 'white')
+                  (e.currentTarget.style.backgroundColor = backgroundColor)
                 }
               >
                 <div
@@ -213,7 +263,7 @@ function App() {
               style={{
                 display: 'flex',
                 gap: '10px',
-                background: 'white',
+                background: backgroundColor,
                 padding: '8px 12px',
                 borderRadius: '8px',
                 border: '1px solid #ddd',
@@ -230,11 +280,12 @@ function App() {
               style={{
                 display: 'flex',
                 gap: '10px',
-                background: 'white',
+                background: backgroundColor,
                 padding: '8px 12px',
                 borderRadius: '8px',
                 border: '1px solid #ddd',
                 boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
+                color: maintextColor,
               }}
             >
               <MakeFirstUpper />
@@ -248,7 +299,7 @@ function App() {
               style={{
                 display: 'flex',
                 gap: '10px',
-                background: 'white',
+                background: backgroundColor,
                 padding: '8px 12px',
                 borderRadius: '8px',
                 border: '1px solid #ddd',
@@ -274,7 +325,7 @@ function App() {
               <p
                 id="changeText11"
                 style={{
-                  maxWidth: '760px',
+                  maxWidth: '60vw',
                   width: '100%',
                   whiteSpace: 'pre-line',
                   fontSize: `${fontSize}px`,
@@ -284,6 +335,7 @@ function App() {
                   backgroundColor: 'white',
                   boxShadow: '0 3px 10px rgba(0,0,0,0.08)',
                   letterSpacing: `${letterSpacing}px`,
+                  color: 'black',
                 }}
               >
                 {processedContent}
@@ -305,7 +357,14 @@ function App() {
             minWidth: 0,
           }}
         >
-          <h6 style={{ marginBottom: '12px', fontWeight: 'bold' }}>
+          <h6
+            style={{
+              marginBottom: '12px',
+              color: 'black',
+              fontSize: '20px',
+              fontWeight: 'bold',
+            }}
+          >
             Document Info
           </h6>
 

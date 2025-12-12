@@ -1,9 +1,11 @@
 import React from "react";
 import { useFileStore } from '../utils/zustand/file-store';
+import '../App.css'
 
 export function RemoveLine() {
   const content = useFileStore((state) => state.content);
   const setContent = useFileStore((state) => state.setContent);
+  const maintextColor = useFileStore((state) => state.maintextColor);
 
   function removeLine() {
     // RegEx to split on punctions but retain them in the actual string
@@ -19,18 +21,22 @@ export function RemoveLine() {
 
   return (
     <button
+      className="tooltip-container "
       onClick={removeLine}
       disabled={!content}
       style={{
+        pointerEvents: 'auto',
         border: "none",
         background: "transparent",
         cursor: "pointer",
         fontSize: "13px",
         padding: "4px 8px",
         borderRadius: "4px",
+        color: maintextColor,
       }}
     >
       Remove Line
+      <div className="tooltip-text" style={{backgroundColor: "#1317f9c9", color: "white", zIndex:'50', position:"absolute"}}>Remove all new lines</div>
     </button>
   );
 };
