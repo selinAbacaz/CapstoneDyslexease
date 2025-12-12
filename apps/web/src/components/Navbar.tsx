@@ -2,7 +2,6 @@ import { Button } from 'react-bootstrap';
 import { useAuthStore } from '../utils/zustand/auth-store';
 import { useAuth } from '../utils/auth-helpers';
 import { useGeneralStore } from '../utils/zustand/general-store';
-import { FileSelector } from './FileSelector';
 import { Save } from './Save';
 import { Delete } from './Delete';
 
@@ -25,8 +24,12 @@ export function Navbar() {
     >
       <div style={{ display: 'flex', gap: 10 }}>
         <h2>Dyslexease</h2>
-        <Button onClick={() => setFormType('file-create')}>Create File</Button>
-        <FileSelector />
+        <Button
+          hidden={!isAuthenticated}
+          onClick={() => setFormType('file-create')}
+        >
+          Create File
+        </Button>
         <Save />
         <Delete />
       </div>
