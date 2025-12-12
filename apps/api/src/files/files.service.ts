@@ -195,7 +195,7 @@ export class FilesService {
   ): Promise<FileOutWithPrefs> {
     const { file_cuid } = deleteFileDto;
     try {
-      return this.prisma.file.delete({
+      const deletedFile = await this.prisma.file.delete({
         where: { file_cuid, user_cuid },
         select: {
           file_cuid: true,
@@ -221,6 +221,13 @@ export class FilesService {
           },
         },
       });
+
+      await this.prisma.user.update({
+        where: { user_cuid },
+        data: { selected_file_cuid: null },
+      });
+
+      return deletedFile;
     } catch (error) {
       if (
         error instanceof Prisma.PrismaClientKnownRequestError &&
