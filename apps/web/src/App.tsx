@@ -32,6 +32,7 @@ function App() {
     letterSpacing,
     backgroundColor,
     maintextColor,
+    fontSize,
     swapPairs,
     setFile,
   } = useFileStore();
@@ -61,7 +62,13 @@ function App() {
       const {
         file_cuid,
         extracted_text,
-        file_pref: { font, text_spacing, text_color_hex, background_color_hex },
+        file_pref: {
+          font,
+          text_spacing,
+          text_color_hex,
+          background_color_hex,
+          font_size,
+        },
       } = currentFile;
       setFile(
         file_cuid,
@@ -70,6 +77,7 @@ function App() {
         text_spacing,
         background_color_hex,
         text_color_hex,
+        font_size,
         [],
       );
     }
@@ -125,7 +133,7 @@ function App() {
             marginTop: '5vh',
             maxWidth: '80%',
             whiteSpace: 'pre-line',
-            fontSize: '20px',
+            fontSize: `${fontSize}px`,
             textAlign: 'left',
             marginBottom: '50px',
             border: '1px dotted',

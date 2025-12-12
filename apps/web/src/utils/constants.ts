@@ -14,5 +14,6 @@ export const DEFAULT_FILE_PREFS = {
   letterSpacing: 0,
   backgroundColor: '#FFFFFF',
   maintextColor: 'black',
+  fontSize: 20,
   swapPairs: [],
 };

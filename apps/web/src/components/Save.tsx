@@ -12,6 +12,7 @@ export function Save() {
     letterSpacing,
     backgroundColor,
     maintextColor,
+    fontSize,
   } = useFileStore();
   const qc = useQueryClient();
   const saveMutation = useMutation({
@@ -36,6 +37,7 @@ export function Save() {
         text_spacing: letterSpacing,
         background_color_hex: backgroundColor,
         text_color_hex: maintextColor,
+        font_size: fontSize,
         letterSwaps: [],
       },
     });

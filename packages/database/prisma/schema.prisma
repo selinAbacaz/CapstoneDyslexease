@@ -31,7 +31,7 @@ model FilePreference {
   text_color_hex       String
   background_color_hex String
   text_spacing         Int
-  font_size            Int?
+  font_size            Int
   created_at           DateTime     @default(now())
   modified_at          DateTime     @updatedAt
   file                 File         @relation(references: [file_cuid], fields: [file_cuid], onDelete: Cascade)

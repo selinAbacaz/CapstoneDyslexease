@@ -7,7 +7,7 @@ export const CreateFilePrefs = z.object({
   text_color_hex: z.string(),
   background_color_hex: z.string(),
   text_spacing: z.int(),
-  font_szie: z.int().optional(),
+  font_size: z.int(),
   letterSwaps: z.array(CreateSwap.omit({ file_pref_cuid: true })),
 });
 export type CreateFilePrefs = z.infer<typeof CreateFilePrefs>;
@@ -18,7 +18,7 @@ export const FilePrefsOut = z.object({
   text_color_hex: z.string(),
   background_color_hex: z.string(),
   text_spacing: z.int(),
-  font_szie: z.int().nullable(),
+  font_size: z.int(),
   letterSwaps: z.array(SwapOut),
 });
 export type FilePrefsOut = z.infer<typeof FilePrefsOut>;
@@ -29,7 +29,7 @@ export const UpdateFilePrefs = z.object({
   text_color_hex: z.string().optional(),
   background_color_hex: z.string().optional(),
   text_spacing: z.int().optional(),
-  font_szie: z.int().optional(),
+  font_size: z.int().optional(),
   letterSwaps: z.array(UpdateSwap),
 });
 export type UpdateFilePrefs = z.infer<typeof UpdateFilePrefs>;

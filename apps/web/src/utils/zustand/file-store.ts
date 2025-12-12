@@ -3,8 +3,14 @@ import { DEFAULT_FILE_PREFS, FONTS } from '../constants';
 import { SwapPair } from '../types/swap-pair';
 import { FileOut } from '@repo/api/files';
 
-const { content, letterSpacing, backgroundColor, maintextColor, swapPairs } =
-  DEFAULT_FILE_PREFS;
+const {
+  content,
+  letterSpacing,
+  backgroundColor,
+  maintextColor,
+  fontSize,
+  swapPairs,
+} = DEFAULT_FILE_PREFS;
 
 type FileStore = {
   allFiles: FileOut[];
@@ -14,6 +20,7 @@ type FileStore = {
   letterSpacing: number;
   backgroundColor: string;
   maintextColor: string;
+  fontSize: number;
   swapPairs: SwapPair[];
   setAllFiles: (newFiles: FileOut[]) => void;
   setSelectedFileId: (newId: string) => void;
@@ -22,6 +29,7 @@ type FileStore = {
   setLetterSpacing: (newSpacing: number) => void;
   setBackgroundColor: (newColor: string) => void;
   setMainTextColor: (newTextColor: string) => void;
+  setFontSize: (newFontSize: number) => void;
   addSwapPair: (pair: SwapPair) => void;
   removeSwapPair: (index: number) => void;
   setFile: (
@@ -31,6 +39,7 @@ type FileStore = {
     newSpacing: number,
     newColor: string,
     newTextColor: string,
+    fontSize: number,
     newPairs: SwapPair[],
   ) => void;
   reset: () => void;
@@ -44,6 +53,7 @@ export const useFileStore = create<FileStore>((set, get, store) => ({
   letterSpacing,
   backgroundColor,
   maintextColor,
+  fontSize,
   swapPairs,
   setContent: (newContent: string) => {
     set({ content: newContent });
@@ -63,6 +73,9 @@ export const useFileStore = create<FileStore>((set, get, store) => ({
   setMainTextColor: (newTextColor: string) => {
     set({ maintextColor: newTextColor });
   },
+  setFontSize: (newFontSize: number) => {
+    set({ fontSize: newFontSize });
+  },
   addSwapPair: (pair: SwapPair) =>
     set((state: FileStore) => ({
       swapPairs: [...state.swapPairs, pair],
@@ -81,6 +94,7 @@ export const useFileStore = create<FileStore>((set, get, store) => ({
     newSpacing: number,
     newColor: string,
     newTextColor: string,
+    newFontSize: number,
     newPairs: SwapPair[],
   ) => {
     set({ selectedFileId: newId });
@@ -89,6 +103,7 @@ export const useFileStore = create<FileStore>((set, get, store) => ({
     set({ letterSpacing: newSpacing });
     set({ backgroundColor: newColor });
     set({ maintextColor: newTextColor });
+    set({ fontSize: newFontSize });
     set({ swapPairs: newPairs });
   },
   reset: () => {
