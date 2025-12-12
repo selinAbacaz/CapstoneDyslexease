@@ -1,33 +1,25 @@
+import React from "react";
 import { useFileStore } from '../utils/zustand/file-store';
 
-export function LetterSpacing() {
-  const letterSpacing = useFileStore((state) => state.letterSpacing);
-  const setLetterSpacing = useFileStore((state) => state.setLetterSpacing);
-
-  function changeSpacing(event: React.ChangeEvent<HTMLInputElement>) {
-    const newSpacing = Number(event.target.value);
-    if (newSpacing || newSpacing === 0) {
-      setLetterSpacing(newSpacing);
-    }
-  }
+export const LetterSpacing = () => {
+  const letterSpacing = useFileStore((s) => s.letterSpacing);
+  const setLetterSpacing = useFileStore((s) => s.setLetterSpacing);
 
   return (
-    <div>
-      <label htmlFor="Spacing" style={{ fontSize: '18px' }}>
-        Change Letter Spacing:
-      </label>
-      <input
-        id="Spacing"
-        name="Change Letter Spacing"
-        value={letterSpacing}
-        onChange={changeSpacing}
-        style={{
-          color: '#4a6cc7',
-          border: '1.5px solid #4a6cc7',
-          borderRadius: '5px',
-          marginLeft: '10px',
-        }}
-      />
+    <div style={{ display: "flex", flexDirection: "column" }}>
+    <label style={{ fontSize: 12, marginBottom: 4 }}>Letter Spacing</label>
+
+    <input
+      type="number"
+      value={letterSpacing}
+      onChange={(e) => setLetterSpacing(Number(e.target.value))}
+      style={{
+        width: "50px",
+        background: "transparent",
+        fontSize: "14px",
+        border: "1px solid #ccc",
+      }}
+    />
     </div>
   );
-}
+};

@@ -75,7 +75,7 @@ function App() {
           overflow: 'hidden',
         }}
       >
-        {/* LEFT SIDEBAR — FILE LIST */}
+        {/* LEFT SIDEBAR */}
         <div
           style={{
             width: '230px',
@@ -87,9 +87,6 @@ function App() {
             minWidth: 0,
           }}
         >
-          <h5 style={{ marginBottom: '12px', fontWeight: 'bold' }}>
-            Your Files
-          </h5>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
             {data?.map((file) => (

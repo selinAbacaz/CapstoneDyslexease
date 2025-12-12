@@ -16,7 +16,11 @@ export function FontDropdown() {
           key={newFont.font}
           onClick={() => setFont(newFont.font)}
           className="dropdown-item"
-          style={{ cursor: 'pointer' }}
+          style={{
+            cursor: 'pointer',
+            fontSize: '13px',
+            padding: '8px 12px',
+          }}
         >
           {newFont.name}
         </li>
@@ -30,16 +34,36 @@ export function FontDropdown() {
   return (
     <div className="dropdown">
       <button
-        className="btn btn-primary dropdown-toggle"
+        className="dropdown-toggle"
         type="button"
         data-bs-toggle="dropdown"
         aria-expanded="false"
-        style={{ boxShadow: '2px 2px 10px #99aee7' }}
+        style={{
+          background: '#ffffff',
+          border: '1px solid #ddd',
+          borderRadius: '8px',
+          padding: '6px 12px',
+          fontSize: '13px',
+          cursor: 'pointer',
+          boxShadow: '0 1px 4px rgba(0,0,0,0.08)',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '6px',
+        }}
       >
-        Pick Fonts
+        Pick Font
       </button>
-      <ul className="dropdown-menu">
-        {createFontOptions().map((option) => option)}
+
+      <ul
+        className="dropdown-menu"
+        style={{
+          borderRadius: '8px',
+          border: '1px solid #ddd',
+          boxShadow: '0 2px 10px rgba(0,0,0,0.12)',
+          padding: '6px 0',
+        }}
+      >
+        {createFontOptions()}
       </ul>
     </div>
   );
