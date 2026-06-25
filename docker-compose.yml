@@ -1,0 +1,10 @@
+services:
+  backend:
+    build:
+      context: .
+    environment:
+      NODE_ENV: production
+    env_file:
+      - ./.env.production.local
+    ports:
+      - 3001:3001
