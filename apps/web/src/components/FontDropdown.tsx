@@ -1,6 +1,7 @@
 import { JSX } from 'react';
 import { FONTS } from '../utils/constants';
 import { useFileStore } from '../utils/zustand/file-store';
+import '../App.css'
 
 export function FontDropdown() {
   const setFont = useFileStore((state) => state.setFont);
@@ -32,7 +33,10 @@ export function FontDropdown() {
   }
 
   return (
-    <div className="dropdown">
+    <div className="dropdown tooltip-container" style={{pointerEvents: 'auto'}}>
+      <div className="tooltip-text " 
+      style={{backgroundColor: "#1317f9c9", color: "white", maxWidth: "20vh"}}>
+        remove added new lines </div>
       <button
         className="dropdown-toggle"
         type="button"
